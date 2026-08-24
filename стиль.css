@@ -1,0 +1,244 @@
+/*
+  стиль.css — ОФОРМЛЕНИЕ. Отступы, размеры, рамки, шрифты.
+
+  Цвета сюда не вписаны почти нигде: они приходят из темы Телеграма и
+  подставляются в переменные --фон, --текст и остальные из герой.js.
+  Вне Телеграма подставляется запасная тема из настройки.js.
+
+  Исключение — оттенок народа: он свой у каждого народа и приходит из
+  мир.js, попадая в переменную --оттенок.
+
+  Всё плоское: ни теней, ни объёма, ни движения. Проверять на 360.
+*/
+
+:root {
+  --фон: #0b0f14;
+  --поле: #12161c;
+  --текст: #e8f4f8;
+  --тусклый: #7a8894;
+  --кнопка: #2dd4bf;
+  --текст-кнопки: #0b0f14;
+  --тревога: #e2725b;
+  --оттенок: #2dd4bf;
+
+  --радиус: 10px;
+  --поле-окна: 16px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--фон);
+  color: var(--текст);
+  font: 400 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: var(--поле-окна);
+  padding-bottom: calc(var(--поле-окна) + env(safe-area-inset-bottom, 0px));
+  min-height: 100vh;
+  -webkit-text-size-adjust: 100%;
+}
+
+.окно { width: 100%; max-width: 380px; }
+[hidden] { display: none !important; }
+
+/* ── общие мелочи ───────────────────────────────────────────────── */
+h2 {
+  font-size: 13px; font-weight: 400; color: var(--тусклый);
+  margin: 0 0 8px;
+}
+.тускло { color: var(--тусклый); }
+.мелко { font-size: 13px; }
+.по-центру { text-align: center; }
+.заметка {
+  font-size: 11.5px; color: var(--тусклый); opacity: .75;
+  text-align: center; margin-top: 14px; line-height: 1.6;
+  white-space: pre-line;
+}
+.заметка.снизу { margin-top: 22px; }
+
+/* ── вступление ─────────────────────────────────────────────────── */
+.вступление { text-align: center; padding: 44px 0 28px; }
+.надмир {
+  font-size: 11px; color: var(--тусклый); opacity: .7;
+  letter-spacing: .22em; margin-bottom: 10px;
+}
+.крупно {
+  font-size: 26px; font-weight: 500; line-height: 1.3;
+  white-space: pre-line;
+}
+.вступление p { font-size: 14px; margin-top: 14px; line-height: 1.6; }
+
+/* ── полоска шагов ──────────────────────────────────────────────── */
+.полоска { display: flex; gap: 4px; margin-bottom: 16px; }
+.полоска i {
+  flex: 1; height: 3px; border-radius: 2px;
+  background: var(--поле);
+}
+.полоска i.есть { background: var(--оттенок); }
+
+/* ── живой предпросмотр ─────────────────────────────────────────── */
+.превью {
+  background: var(--поле);
+  border: 1px solid var(--оттенок);
+  border-radius: var(--радиус);
+  padding: 12px; display: flex; gap: 12px; align-items: center;
+  margin-bottom: 18px;
+}
+.превью-текст { min-width: 0; }
+.превью-текст b { display: block; font-size: 15px; font-weight: 500; }
+.превью-текст span {
+  display: block; font-size: 12px; color: var(--тусклый); margin-top: 2px;
+}
+
+.знак {
+  flex: none; width: 52px; height: 52px; border-radius: 8px;
+  background: var(--фон); border: 1px solid var(--оттенок);
+  display: flex; align-items: center; justify-content: center;
+}
+.знак.крупный { width: 64px; height: 64px; margin: 0 auto 10px; }
+.знак svg { display: block; }
+
+/* ── выбор ──────────────────────────────────────────────────────── */
+.ряд { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+
+.вар {
+  flex: 1; min-width: 64px; text-align: center; padding: 10px 6px;
+  border-radius: 8px; background: var(--поле); color: var(--тусклый);
+  font-size: 13px; cursor: pointer; border: 1px solid transparent;
+  user-select: none;
+}
+.вар.выбран {
+  background: var(--оттенок); color: var(--текст-кнопки); font-weight: 500;
+}
+
+.цвет {
+  flex: 1; height: 38px; border-radius: 8px; cursor: pointer;
+  border: 2px solid transparent;
+}
+.цвет.выбран { border-color: var(--текст); }
+
+.народ {
+  display: flex; gap: 10px; align-items: center; padding: 12px;
+  border-radius: var(--радиус); background: var(--поле); margin-bottom: 8px;
+  cursor: pointer; border: 1px solid transparent;
+}
+.народ.выбран { border-color: var(--оттенок); }
+.народ b { font-size: 15px; font-weight: 500; }
+.народ span {
+  font-size: 12px; color: var(--тусклый); display: block;
+  margin-top: 3px; line-height: 1.45;
+}
+
+/* ── имя ────────────────────────────────────────────────────────── */
+input {
+  width: 100%; background: var(--поле); border: 1px solid var(--поле);
+  border-radius: 9px; padding: 12px 13px; color: var(--текст);
+  font-size: 16px; font-family: inherit; line-height: 1.4; outline: none;
+}
+input:focus { border-color: var(--оттенок); }
+.ошибка {
+  color: var(--тревога); font-size: 12.5px; margin-top: 7px; min-height: 17px;
+}
+
+/* ── свободное описание ─────────────────────────────────────────── */
+.предупреждение {
+  font-size: 12px; color: var(--тусклый); line-height: 1.45;
+  margin: -2px 0 8px;
+}
+textarea {
+  width: 100%; background: var(--поле); border: 1px solid var(--поле);
+  border-radius: 9px; padding: 11px 13px; color: var(--текст);
+  font-size: 15px; font-family: inherit; line-height: 1.45;
+  outline: none; resize: none;
+  display: block;
+}
+textarea:focus { border-color: var(--оттенок); }
+.под-полем {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 8px; margin-top: 6px; margin-bottom: 10px;
+}
+.под-полем .ошибка { margin-top: 0; }
+.счёт { font-size: 12px; color: var(--тусклый); flex: none; }
+.счёт.много { color: var(--тревога); }
+.описание {
+  font-size: 13px; color: var(--тусклый); margin-top: 8px;
+  line-height: 1.5; font-style: italic;
+}
+
+/* ── подтверждение ──────────────────────────────────────────────── */
+.сводка {
+  background: var(--поле); border: 1px solid var(--оттенок);
+  border-radius: var(--радиус); padding: 16px; text-align: center;
+}
+.сводка b { display: block; font-size: 20px; font-weight: 500; }
+.сводка span {
+  display: block; font-size: 12.5px; color: var(--тусклый); margin-top: 4px;
+}
+.навсегда {
+  background: var(--поле); border-left: 2px solid var(--оттенок);
+  border-radius: 0 8px 8px 0; padding: 12px 14px; font-size: 13px;
+  color: var(--тусклый); line-height: 1.5; margin: 16px 0;
+}
+.навсегда b { display: block; color: var(--текст); margin-bottom: 3px; }
+
+/* ── кнопки ─────────────────────────────────────────────────────── */
+.кнопки { display: flex; gap: 8px; margin-top: 6px; }
+/* Кнопка сама по себе занимает всю ширину. Внутри ряда ширину делит
+   flex — иначе одиночная кнопка сжималась бы по тексту. */
+.кн {
+  display: block; width: 100%; text-align: center; padding: 13px 0;
+  border-radius: 9px; font-size: 14px; font-family: inherit; cursor: pointer;
+  user-select: none; border: none; color: var(--текст);
+}
+.кнопки .кн { width: auto; flex: 1; }
+.кнопки .кн.тихая { flex: none; }
+.кн.главная {
+  background: var(--кнопка); color: var(--текст-кнопки); font-weight: 500;
+}
+.кн.тихая { background: var(--поле); color: var(--тусклый); padding: 13px 18px; }
+.кн.широкая { width: 100%; margin-top: 14px; }
+.кн:disabled { opacity: .35; pointer-events: none; }
+
+.ссылка {
+  background: none; border: none; color: var(--тусклый);
+  font: inherit; font-size: 11.5px; text-decoration: underline;
+  cursor: pointer; padding: 0; display: block; margin: 0 auto 4px;
+}
+
+/* ── готовый герой ──────────────────────────────────────────────── */
+.итог {
+  background: var(--поле); border: 1px solid var(--оттенок);
+  border-radius: 12px; overflow: hidden;
+}
+.портрет {
+  aspect-ratio: 1 / 1; background: var(--фон);
+  display: flex; align-items: center; justify-content: center;
+  border-bottom: 1px solid var(--оттенок);
+}
+.портрет img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.портрет .ждём { font-size: 12px; color: var(--тусклый); }
+.портрет .знак { width: 84px; height: 84px; border: none; background: none; }
+
+.итог-низ { padding: 14px 16px 16px; }
+.итог-низ h1 { font-size: 22px; font-weight: 500; }
+.род { font-size: 12px; color: var(--оттенок); margin-top: 3px; }
+.судьба { font-size: 13px; color: var(--тусклый); margin-top: 10px; line-height: 1.5; }
+.девиз { font-size: 12.5px; color: var(--тусклый); font-style: italic; margin-top: 9px; }
+.мир-подпись {
+  font-size: 10.5px; color: var(--тусклый); opacity: .6;
+  letter-spacing: .05em; margin-top: 14px;
+}
+
+.блок-мир {
+  background: var(--поле); border-radius: var(--радиус);
+  padding: 13px 15px; margin-top: 18px;
+}
+.блок-мир h2 { margin-bottom: 5px; }
+
+/* узкие телефоны: 360 и меньше */
+@media (max-width: 360px) {
+  body { padding: 12px; }
+  .вар { min-width: 56px; font-size: 12.5px; }
+  .итог-низ h1 { font-size: 20px; }
+}

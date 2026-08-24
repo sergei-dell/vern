@@ -1,0 +1,285 @@
+/*
+  стиль.css — ОБЩЕЕ ОФОРМЛЕНИЕ мира-витрины.
+
+  Цвета приходят из темы Телеграма и подставляются в переменные из
+  ход.js. Вне Телеграма берётся запасная тема из настройки.js.
+
+  Отдельный вид каждого кольца — в страницы.css. Здесь только то, что
+  одинаково везде: раскладка, карточки, стол, чат, окошко.
+
+  Всё плоское. Движение только как отклик на нажатие.
+*/
+
+:root {
+  --фон: #0b0f14;
+  --поле: #12161c;
+  --текст: #e8f4f8;
+  --тусклый: #7a8894;
+  --кнопка: #2dd4bf;
+  --текст-кнопки: #0b0f14;
+  --тревога: #e2725b;
+
+  /* задаются страницей, см. страницы.css */
+  --кольцо: #2dd4bf;
+  --кольцо-фон: #12161c;
+  --кольцо-рамка: #2a3038;
+
+  --радиус: 10px;
+  --поле-окна: 14px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--фон);
+  color: var(--текст);
+  font: 400 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  display: flex; justify-content: center;
+  padding: var(--поле-окна);
+  padding-bottom: calc(var(--поле-окна) + env(safe-area-inset-bottom, 0px));
+  min-height: 100vh;
+  -webkit-text-size-adjust: 100%;
+  overscroll-behavior-x: none;
+}
+
+.окно { width: 100%; max-width: 380px; }
+[hidden] { display: none !important; }
+
+h2 { font-size: 13px; font-weight: 400; color: var(--тусклый); margin: 18px 0 8px; }
+.тускло { color: var(--тусклый); }
+.мелко { font-size: 12.5px; }
+.по-центру { text-align: center; }
+
+/* честная строка, обязана быть на каждом экране */
+.пример {
+  font-size: 11px; color: var(--тусклый); opacity: .6;
+  text-align: center; margin-top: 22px; line-height: 1.5;
+}
+
+/* ── ворота ─────────────────────────────────────────────────────── */
+.ворота { text-align: center; padding: 46px 0 26px; }
+.надмир {
+  font-size: 11px; color: var(--тусклый); opacity: .7;
+  letter-spacing: .22em; margin-bottom: 10px;
+}
+.крупно { font-size: 26px; font-weight: 500; line-height: 1.3; white-space: pre-line; }
+.ворота p { font-size: 14px; margin-top: 14px; line-height: 1.6; }
+
+.герой-полоска {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--поле); border-radius: var(--радиус);
+  padding: 10px 12px; margin-bottom: 12px;
+}
+.герой-полоска img { width: 38px; height: 38px; border-radius: 8px; object-fit: cover; }
+.герой-полоска b { font-size: 14px; font-weight: 500; display: block; }
+.герой-полоска span { font-size: 12px; color: var(--тусклый); }
+
+/* ── шапка ──────────────────────────────────────────────────────── */
+.шапка {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+}
+.шапка h1 {
+  flex: 1; text-align: center; font-size: 18px; font-weight: 500;
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.стрелка {
+  flex: none; width: 38px; height: 38px; border-radius: 9px;
+  background: var(--поле); color: var(--текст); border: none;
+  font-size: 16px; font-family: inherit; cursor: pointer;
+}
+.стрелка:disabled { opacity: .3; pointer-events: none; }
+.стрелка.пусто { background: none; pointer-events: none; }
+
+/* ── кварталы ───────────────────────────────────────────────────── */
+.кварталы { display: flex; gap: 5px; margin-bottom: 14px; flex-wrap: wrap; }
+.квартал {
+  flex: 1; min-width: 62px; display: flex; flex-direction: column;
+  align-items: center; gap: 3px; padding: 8px 4px; border-radius: 9px;
+  background: var(--поле); color: var(--тусклый); font-size: 11.5px;
+  border: 1px solid transparent; cursor: pointer; user-select: none;
+}
+.квартал.выбран { border-color: var(--кольцо); color: var(--текст); }
+.квартал.закрыт { opacity: .35; cursor: default; }
+
+/* ── места ──────────────────────────────────────────────────────── */
+.места { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+.место {
+  background: var(--кольцо-фон); border: 1px solid var(--кольцо-рамка);
+  border-radius: var(--радиус); padding: 11px 12px; cursor: pointer;
+  min-height: 96px; display: flex; flex-direction: column; gap: 4px;
+}
+.место .верх { display: flex; align-items: center; gap: 6px; }
+.место .название {
+  font-size: 14px; font-weight: 500; line-height: 1.25;
+  overflow: hidden; display: -webkit-box;
+  -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+}
+.место .хозяин {
+  font-size: 12px; color: var(--тусклый);
+  display: flex; align-items: center; gap: 5px; margin-top: auto;
+}
+.место .занятость {
+  font-size: 12px; color: var(--кольцо); margin-top: 2px;
+}
+.место.свободно { border-style: dashed; }
+.место.свободно .название { color: var(--тусклый); font-weight: 400; }
+.место.свободно .цена { font-size: 15px; color: var(--кольцо); margin-top: auto; }
+.место.закрыта { opacity: .55; }
+
+/* ── точки страниц ──────────────────────────────────────────────── */
+.точки {
+  display: flex; justify-content: center; align-items: center;
+  gap: 7px; margin-top: 16px;
+}
+.точки i {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--тусклый); opacity: .35;
+}
+.точки i.открыта { opacity: .8; }
+.точки i.текущая {
+  background: none; border: 2px solid var(--кольцо); opacity: 1;
+  width: 9px; height: 9px;
+}
+.точки i.закрыта { width: 5px; height: 5px; opacity: .2; }
+
+/* ── лавка ──────────────────────────────────────────────────────── */
+.хозяин {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; color: var(--кольцо);
+}
+.описание { font-size: 13.5px; color: var(--тусклый); margin-top: 8px; line-height: 1.5; }
+
+.стол-строка {
+  background: var(--поле); border-radius: var(--радиус);
+  padding: 11px 12px; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 10px;
+}
+.стол-строка .о-столе { flex: 1; min-width: 0; }
+.стол-строка b { font-size: 14px; font-weight: 500; display: block; }
+.стол-строка .кто { font-size: 12px; color: var(--тусклый); margin-top: 3px;
+  display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+.стол-строка .ставка { font-size: 12px; color: var(--кольцо); margin-top: 2px; }
+
+/* ── стол ───────────────────────────────────────────────────────── */
+.круг-стола {
+  position: relative; width: 100%; aspect-ratio: 1 / 1;
+  max-width: 300px; margin: 4px auto 0;
+}
+.круг-стола .середина {
+  position: absolute; inset: 22%; border-radius: 50%;
+  background: var(--поле); border: 1px solid var(--кольцо-рамка);
+  display: flex; align-items: center; justify-content: center;
+  text-align: center; font-size: 12px; color: var(--тусклый); padding: 8px;
+}
+/* Долю в проценты переводит оформление: в логике остаются числа
+   без единиц, а единицы живут там, где им место. */
+.место-за-столом {
+  position: absolute;
+  left: calc(var(--х) * 100%); top: calc(var(--у) * 100%);
+  width: calc(var(--размер) * 100%);
+  transform: translate(-50%, -50%);
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  text-align: center;
+}
+.место-за-столом .лицо {
+  width: 100%; aspect-ratio: 1 / 1; border-radius: 50%;
+  background: var(--поле); border: 1px solid var(--кольцо-рамка);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.место-за-столом .лицо img { width: 100%; height: 100%; object-fit: cover; }
+.место-за-столом.ходит .лицо { border-color: var(--кольцо); border-width: 2px; }
+.место-за-столом .подпись {
+  font-size: 10.5px; color: var(--тусклый); line-height: 1.2;
+  max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.место-за-столом.пустое .лицо { border-style: dashed; cursor: pointer; }
+.место-за-столом.пустое .подпись { color: var(--кольцо); }
+
+.чей-ход {
+  text-align: center; font-size: 13px; color: var(--кольцо);
+  margin-top: 10px; min-height: 20px;
+}
+
+/* ── шахматы ────────────────────────────────────────────────────── */
+.доска {
+  display: grid; grid-template-columns: repeat(8, 1fr);
+  width: 100%; max-width: 340px; margin: 10px auto 0;
+  border: 1px solid var(--кольцо-рамка); border-radius: 6px; overflow: hidden;
+}
+.клетка {
+  aspect-ratio: 1 / 1; display: flex; align-items: center;
+  justify-content: center; font-size: 25px; line-height: 1;
+  cursor: pointer; user-select: none; position: relative;
+}
+.клетка.светлая { background: #3a4550; }
+.клетка.тёмная  { background: #232c35; }
+.клетка.выбрана { background: var(--кольцо); }
+.клетка.можно::after {
+  content: ''; position: absolute; width: 26%; height: 26%;
+  border-radius: 50%; background: var(--кольцо); opacity: .55;
+}
+.клетка.можно.занята::after {
+  width: 82%; height: 82%; background: none;
+  border: 2px solid var(--кольцо); opacity: .7;
+}
+.клетка .фигура { position: relative; z-index: 1; }
+.клетка.белая-фигура .фигура { color: #f2f5f7; }
+.клетка.чёрная-фигура .фигура { color: #10161c; }
+
+.итог-партии {
+  text-align: center; font-size: 14px; color: var(--кольцо);
+  margin-top: 10px; min-height: 20px;
+}
+
+/* ── разговор ───────────────────────────────────────────────────── */
+.разговор {
+  background: var(--поле); border-radius: var(--радиус);
+  padding: 10px 12px; max-height: 190px; overflow-y: auto;
+}
+.реплика { font-size: 13px; margin-bottom: 7px; line-height: 1.45; }
+.реплика:last-child { margin-bottom: 0; }
+.реплика b { font-weight: 500; color: var(--кольцо); }
+.реплика.моя b { color: var(--текст); }
+
+.строка-чата { display: flex; gap: 7px; margin-top: 8px; }
+.строка-чата input {
+  flex: 1; min-width: 0; background: var(--поле); border: 1px solid var(--поле);
+  border-radius: 9px; padding: 11px 12px; color: var(--текст);
+  font-size: 15px; font-family: inherit; outline: none;
+}
+.строка-чата input:focus { border-color: var(--кольцо); }
+
+/* ── кнопки ─────────────────────────────────────────────────────── */
+.кн {
+  display: block; width: 100%; text-align: center; padding: 13px 0;
+  border-radius: 9px; font-size: 14px; font-family: inherit;
+  cursor: pointer; user-select: none; border: none; color: var(--текст);
+}
+.кн.главная { background: var(--кнопка); color: var(--текст-кнопки); font-weight: 500; }
+.кн.тихая { background: var(--поле); color: var(--тусклый); }
+.кн.мелкая { width: auto; padding: 9px 14px; font-size: 13px; flex: none; }
+.кн:disabled { opacity: .35; pointer-events: none; }
+.кнопки { display: flex; gap: 8px; margin-top: 14px; }
+.кнопки .кн { flex: 1; }
+
+/* ── окошко ─────────────────────────────────────────────────────── */
+.завеса {
+  position: fixed; inset: 0; background: rgba(0, 0, 0, .6);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px; z-index: 10;
+}
+.окошко {
+  background: var(--поле); border: 1px solid var(--кольцо-рамка);
+  border-radius: 12px; padding: 18px; width: 100%; max-width: 320px;
+}
+.окошко h2 { margin: 0 0 8px; color: var(--текст); font-size: 16px; font-weight: 500; }
+.окошко p { font-size: 13.5px; color: var(--тусклый); line-height: 1.5; }
+
+@media (max-width: 360px) {
+  body { padding: 11px; }
+  .места { gap: 7px; }
+  .место { padding: 10px; min-height: 90px; }
+  .клетка { font-size: 22px; }
+}

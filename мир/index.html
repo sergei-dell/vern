@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Вэрн · Сердце</title>
+
+<!--
+  index.html — РАЗМЕТКА всех экранов мира-витрины.
+
+  Видимого текста здесь нет: у каждого места стоит метка data-т, текст
+  подставляется из мир.js. Так владелец правит надписи в одном файле.
+
+  Экранов четыре: ворота, страница рынка, лавка, стол.
+  Всё, что внутри них, собирается кодом из данных.
+-->
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="stylesheet" href="стиль.css">
+<link rel="stylesheet" href="страницы.css">
+</head>
+<body>
+<div class="окно">
+
+  <!-- ══ ворота ══════════════════════════════════════════════════ -->
+  <section id="э-ворота" hidden>
+    <div class="ворота">
+      <div class="надмир" data-т="надпись_мир"></div>
+      <h1 class="крупно" data-т="заголовок_ворота"></h1>
+      <p class="тускло" data-т="описание_ворота"></p>
+    </div>
+    <div id="герой-полоска" class="герой-полоска" hidden></div>
+    <button class="кн главная" id="к-войти" data-т="кнопка_войти"></button>
+    <p class="пример" data-т="пример_мира"></p>
+  </section>
+
+  <!-- ══ страница рынка ══════════════════════════════════════════ -->
+  <section id="э-страница" hidden>
+    <header class="шапка">
+      <button class="стрелка" id="к-предыдущая" data-т="назад"></button>
+      <h1 id="имя-страницы"></h1>
+      <button class="стрелка" id="к-следующая" data-т="вперёд"></button>
+    </header>
+
+    <nav class="кварталы" id="кварталы"></nav>
+
+    <div class="места" id="места"></div>
+
+    <div class="точки" id="точки"></div>
+    <p class="пример" data-т="пример_мира"></p>
+  </section>
+
+  <!-- ══ лавка ═══════════════════════════════════════════════════ -->
+  <section id="э-лавка" hidden>
+    <header class="шапка">
+      <button class="стрелка" id="к-из-лавки" data-т="назад"></button>
+      <h1 id="имя-лавки"></h1>
+      <span class="стрелка пусто"></span>
+    </header>
+
+    <div class="хозяин" id="хозяин-лавки"></div>
+    <p class="описание" id="описание-лавки"></p>
+
+    <h2 id="заголовок-столов" data-т="лавка_столы"></h2>
+    <div id="столы-лавки"></div>
+    <p class="тускло мелко" id="лавка-примечание"></p>
+
+    <p class="пример" data-т="пример_мира"></p>
+  </section>
+
+  <!-- ══ стол ════════════════════════════════════════════════════ -->
+  <section id="э-стол" hidden>
+    <header class="шапка">
+      <button class="стрелка" id="к-из-стола" data-т="назад"></button>
+      <h1 id="имя-стола"></h1>
+      <span class="стрелка пусто"></span>
+    </header>
+
+    <div class="круг-стола" id="круг-стола"></div>
+    <div class="чей-ход" id="чей-ход"></div>
+
+    <!-- игровое поле: сейчас только шахматы -->
+    <div id="поле-игры"></div>
+    <p class="тускло мелко по-центру" id="стол-примечание"></p>
+
+    <h2 data-т="стол_разговор"></h2>
+    <div class="разговор" id="разговор"></div>
+    <div class="строка-чата">
+      <input id="поле-чата" type="text" autocomplete="off">
+      <button class="кн тихая" id="к-сказать" data-т="стол_отправить"></button>
+    </div>
+    <p class="тускло мелко" data-т="стол_чат_местный"></p>
+
+    <p class="пример" data-т="пример_мира"></p>
+  </section>
+
+  <!-- ══ окошко ══════════════════════════════════════════════════ -->
+  <div class="завеса" id="завеса" hidden>
+    <div class="окошко">
+      <h2 id="окошко-заголовок"></h2>
+      <p id="окошко-текст"></p>
+      <div class="кнопки" id="окошко-кнопки"></div>
+    </div>
+  </div>
+
+</div>
+
+<script src="мир.js"></script>
+<script src="настройки.js"></script>
+<script src="ход.js"></script>
+<script type="module" src="шахматы.js"></script>
+</body>
+</html>
