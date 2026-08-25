@@ -77,18 +77,22 @@
 }
 
 :root {
-  --фон: #0b0f14;
-  --поле: #12161c;
-  --текст: #e8f4f8;
-  --тусклый: #7a8894;
-  --кнопка: #2dd4bf;
-  --текст-кнопки: #0b0f14;
-  --тревога: #e2725b;
+  /* Тёплый уголь вместо синевы. Мятного на карте нет вовсе: он остался
+     только отметкой занятости за столом. Те же значения продублированы
+     в настройки.js — оттуда их ставит ход.js, здесь они запасные. */
+  --фон: #0e0c0a;
+  --поле: #17130f;
+  --текст: #e8e2d6;
+  --тусклый: #8a7f6f;
+  --кнопка: #b99a58;
+  --текст-кнопки: #14100c;
+  --тревога: #c4674a;
+  --огонёк: #f0b95c;
 
   /* задаются страницей, см. страницы.css */
-  --кольцо: #2dd4bf;
-  --кольцо-фон: #12161c;
-  --кольцо-рамка: #2a3038;
+  --кольцо: #b99a58;
+  --кольцо-фон: #17130f;
+  --кольцо-рамка: #332a1e;
 
   --радиус: 10px;
   --поле-окна: 14px;
@@ -155,7 +159,8 @@ h2 { font-size: 13px; font-weight: 400; color: var(--тусклый); margin: 18
   display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
 }
 .шапка h1 {
-  flex: 1; text-align: center; font-size: 18px; font-weight: 500;
+  flex: 1; text-align: center; font-size: 22px; font-weight: 400;
+  letter-spacing: .06em; color: var(--текст);
   min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 .стрелка {
@@ -185,38 +190,76 @@ h2 { font-size: 13px; font-weight: 400; color: var(--тусклый); margin: 18
 }
 .квартал.закрыт { opacity: .35; cursor: default; }
 
-/* ── места ──────────────────────────────────────────────────────── */
-.места { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+/* ── карта ──────────────────────────────────────────────────────────
+   Ларьки стоят по долям от 0 до 1, доли приходят из мир.js. Проценты
+   считает оформление, чтобы в логике остались числа без единиц.      */
 
-.место {
-  background: var(--кольцо-фон);
-  background-clip: padding-box;
-  border-style: solid; border-color: transparent; border-radius: 0;
-  image-rendering: pixelated;
-  border-width: var(--рамка);
-  border-image: url('облик/рамка-панель.png') 16 round;
-  padding: 0 4px 6px; cursor: pointer;
-  min-height: 106px; display: flex; flex-direction: column; gap: 3px;
+.набор-силуэтов { display: none; }
+
+.карта {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1.34;
+  margin: 2px 0 4px;
 }
-.место .верх { display: flex; align-items: center; gap: 6px; }
-.место .название {
-  font-size: 14px; font-weight: 500; line-height: 1.25;
-  overflow: hidden; display: -webkit-box;
-  -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+
+.дорожки {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  stroke: var(--металл); stroke-width: 2.5; opacity: .3;
 }
-.место .хозяин {
-  font-size: 12px; color: var(--тусклый);
-  display: flex; align-items: center; gap: 5px; margin-top: auto;
+
+.подпись-квартала {
+  position: absolute;
+  left: calc(var(--х) * 100%); top: calc(var(--у) * 100%);
+  transform: translate(-50%, -50%);
+  font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--тусклый); opacity: .75; white-space: nowrap;
+  pointer-events: none;
 }
-.место .занятость {
-  font-size: 12px; color: var(--кольцо); margin-top: 2px;
+
+.ларёк, .сердце {
+  position: absolute;
+  left: calc(var(--х) * 100%); top: calc(var(--у) * 100%);
+  width: calc(var(--доля) * 100%);
+  transform: translate(-50%, -50%);
+  display: flex; flex-direction: column; align-items: center; gap: 1px;
 }
-.место.свободно {
-  border-image: url('облик/рамка-тихая-панель.png') 16 round;
+.ларёк { cursor: pointer; }
+.силуэт { width: 100%; height: auto; display: block; }
+
+.ларёк .имя, .сердце .имя {
+  font-size: 10.5px; line-height: 1.2; color: var(--тусклый);
+  text-align: center; max-width: 150%;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
-.место.свободно .название { color: var(--тусклый); font-weight: 400; }
-.место.свободно .цена { font-size: 15px; color: var(--кольцо); margin-top: auto; }
-.место.закрыта { opacity: .55; }
+
+/* Состояние решается классом, цвета проходят внутрь силуэта
+   переменными — иначе до содержимого use из оформления не дотянуться. */
+.ларёк {
+  --контур: #6b5c46;
+  --огонь: transparent;
+  --дым: transparent;
+  --фигуры: transparent;
+}
+.ларёк.открыта { --контур: var(--металл); --огонь: var(--огонёк); }
+.ларёк.людно {
+  --контур: var(--металл); --огонь: var(--огонёк);
+  --дым: rgba(232, 226, 214, .22); --фигуры: #d6c7a8;
+}
+.ларёк.людно .имя, .ларёк.открыта .имя { color: var(--текст); }
+.ларёк.закрыта { opacity: .45; }
+.ларёк.свободно { opacity: .42; }
+.ларёк.свободно .имя { color: var(--металл); opacity: .9; }
+
+.сердце {
+  --контур: var(--металл);
+  --огонь: var(--огонёк);
+  pointer-events: none;
+}
+.сердце .имя {
+  color: var(--металл); letter-spacing: .16em; text-transform: uppercase;
+  font-size: 9.5px;
+}
 
 /* ── точки страниц ──────────────────────────────────────────────── */
 .точки {

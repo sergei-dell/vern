@@ -20,6 +20,108 @@
 <link rel="stylesheet" href="страницы.css">
 </head>
 <body>
+<!--
+  Набор силуэтов ларьков. Лежит прямо здесь, а не отдельными файлами:
+  ноль лишних запросов, красится из оформления, весит единицы килобайт.
+
+  Холст 0 0 48 48 — тот же, что у знаков народов в настройки.js.
+  Земля на уровне y=42.
+
+  Цвета не зашиты: контур, огонёк, дым и фигурки берутся из
+  переменных оформления. Переменные проходят внутрь use, поэтому
+  состояние ларька меняется одним классом на обёртке.
+-->
+<svg class="набор-силуэтов" aria-hidden="true" focusable="false">
+  <defs>
+
+    <!-- СТОЛЫ · ПЛОСКИЙ навес на столбах, под ним круглый стол.
+         Крыша нарочно ровная: у мастерских она домиком, у рядов
+         фестонами. По форме крыши квартал и узнаётся издалека. -->
+    <symbol id="силуэт-столы" viewBox="0 0 48 48">
+      <g fill="none" stroke="var(--контур)" stroke-width="2.4"
+         stroke-linejoin="round" stroke-linecap="round">
+        <path d="M2 15 H46"/>
+        <path d="M6 15 V19 M42 15 V19"/>
+        <circle cx="24" cy="22" r="3.4" fill="var(--огонь)" stroke="none"/>
+        <path d="M7 15 V42 M41 15 V42"/>
+        <ellipse cx="24" cy="31" rx="11" ry="3.4"/>
+        <path d="M24 34 V39"/>
+        <path d="M18 39 H30"/>
+        <path d="M2 42 H46"/>
+        <g fill="var(--фигуры)" stroke="none">
+          <circle cx="12" cy="33" r="2.8"/>
+          <circle cx="36" cy="33" r="2.8"/>
+        </g>
+      </g>
+    </symbol>
+
+    <!-- МАСТЕРСКИЕ · кузня: крыша домиком, труба с дымом,
+         арка горна и наковальня перед ней -->
+    <symbol id="силуэт-мастерские" viewBox="0 0 48 48">
+      <g fill="none" stroke="var(--контур)" stroke-width="2.4"
+         stroke-linejoin="round" stroke-linecap="round">
+        <g fill="var(--дым)" stroke="none">
+          <circle cx="35" cy="9" r="2.6"/>
+          <circle cx="39" cy="4.5" r="2"/>
+        </g>
+        <rect x="32" y="11" width="6" height="8"/>
+        <path d="M5 22 L24 9 L43 22"/>
+        <path d="M9 22 V42 H39 V22"/>
+        <path d="M18 42 V33 A6 6 0 0 1 30 33 V42 Z"
+              fill="var(--огонь)" stroke="var(--контур)"/>
+        <path d="M2 42 H46"/>
+        <g fill="var(--фигуры)" stroke="none">
+          <path d="M3 38 H15 L13 34 H5 Z"/>
+          <rect x="7.5" y="38" width="3" height="4"/>
+        </g>
+      </g>
+    </symbol>
+
+    <!-- РЯДЫ · прилавок под полосатым тентом -->
+    <symbol id="силуэт-ряды" viewBox="0 0 48 48">
+      <g fill="none" stroke="var(--контур)" stroke-width="2.4"
+         stroke-linejoin="round" stroke-linecap="round">
+        <circle cx="24" cy="24" r="4" fill="var(--огонь)" stroke="none"/>
+        <path d="M4 17 H44 L44 21 Q37 26 31 21 Q24 26 17 21 Q11 26 4 21 Z"/>
+        <path d="M17 17 V21 M31 17 V21"/>
+        <path d="M6 21 V31 M42 21 V31"/>
+        <path d="M8 31 H40 V38 H8 Z"/>
+        <path d="M8 42 H40"/>
+        <path d="M2 42 H46"/>
+        <g fill="var(--фигуры)" stroke="none">
+          <circle cx="14" cy="36" r="2.6"/>
+          <circle cx="34" cy="36" r="2.6"/>
+        </g>
+      </g>
+    </symbol>
+
+    <!-- СВОБОДНО · голый каркас без крыши -->
+    <symbol id="силуэт-свободно" viewBox="0 0 48 48">
+      <g fill="none" stroke="var(--контур)" stroke-width="2.4"
+         stroke-linejoin="round" stroke-linecap="round"
+         stroke-dasharray="5 4">
+        <path d="M7 19 H41"/>
+        <path d="M10 19 V42 M38 19 V42"/>
+        <path d="M10 30 H38"/>
+        <path d="M2 42 H46"/>
+      </g>
+    </symbol>
+
+    <!-- СЕРДЦЕ · кратер с водой, что не отражает неба -->
+    <symbol id="силуэт-сердце" viewBox="0 0 48 48">
+      <circle cx="24" cy="24" r="17" fill="var(--огонь)" opacity="0.13"/>
+      <circle cx="24" cy="24" r="11" fill="var(--огонь)" opacity="0.22"/>
+      <g fill="none" stroke="var(--контур)" stroke-width="2.2"
+         stroke-linejoin="round">
+        <circle cx="24" cy="24" r="17"/>
+        <circle cx="24" cy="24" r="11"/>
+        <circle cx="24" cy="24" r="4.5" fill="var(--огонь)" stroke="none"/>
+      </g>
+    </symbol>
+
+  </defs>
+</svg>
+
 <div class="окно">
 
   <!-- ══ ворота ══════════════════════════════════════════════════ -->
@@ -42,9 +144,7 @@
       <button class="стрелка" id="к-следующая" data-т="вперёд"></button>
     </header>
 
-    <nav class="кварталы" id="кварталы"></nav>
-
-    <div class="места" id="места"></div>
+    <div class="карта" id="карта"></div>
 
     <div class="точки" id="точки"></div>
     <p class="пример" data-т="пример_мира"></p>
@@ -108,6 +208,5 @@
 <script src="мир.js"></script>
 <script src="настройки.js"></script>
 <script src="ход.js"></script>
-<script type="module" src="шахматы.js"></script>
 </body>
 </html>
