@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Вэрн · набор деталей</title>
+<link rel="stylesheet" href="набор.css">
+<style>
+/* Оформление только самой страницы-образца: подписи, отступы, сетка
+   показа. К набору отношения не имеет и в продукт не переезжает. */
+.лист { max-width: 380px; margin: 0 auto; padding: 16px 14px 40px; }
+.деталь { margin-bottom: 26px; }
+.деталь > .номер {
+  font-size: 11px; color: var(--тусклый); letter-spacing: .18em;
+  text-transform: uppercase; margin-bottom: 7px;
+}
+.деталь > .показ { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
+.деталь > .код {
+  font: 11.5px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--металл); opacity: .8; margin-top: 7px;
+}
+.строка { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.автор {
+  margin-top: 34px; padding-top: 14px;
+  border-top: 1px solid #241b12;
+  font-size: 11.5px; color: var(--тусклый); line-height: 1.6;
+}
+.автор a { color: var(--металл); }
+</style>
+</head>
+<body>
+<div class="лист">
+
+  <div class="деталь">
+    <div class="номер">образец набора</div>
+    <div class="заголовок">Вэрн · детали</div>
+    <div class="подпись">Смотреть на телефоне. Каждая деталь — в живом виде,
+      состояния рядом.</div>
+  </div>
+
+  <!-- 1 · консоль -->
+  <div class="деталь">
+    <div class="номер">1 · консоль</div>
+    <div class="консоль">
+      <div class="зона">
+        <div class="окно-карты"><span class="подпись">карта</span></div>
+      </div>
+      <div class="зона середина">
+        <div class="оправа" style="width:74px">
+          <div class="лицо"></div>
+        </div>
+      </div>
+      <div class="зона">
+        <div class="строка" style="gap:6px">
+          <button class="клетка"></button>
+          <button class="клетка">★</button>
+        </div>
+        <div class="строка" style="gap:6px">
+          <button class="клетка"></button>
+          <button class="клетка нет"></button>
+        </div>
+      </div>
+    </div>
+    <div class="код">.консоль &gt; .зона · .окно-карты</div>
+  </div>
+
+  <!-- 2 и 3 · утопленная и выступающая панель -->
+  <div class="деталь">
+    <div class="номер">2 · панель утопленная</div>
+    <div class="панель утоплена">
+      <div class="подпись">тёмная тень по верху и левому краю,
+        светлая полоска по низу и правому</div>
+    </div>
+    <div class="код">.панель.утоплена</div>
+  </div>
+
+  <div class="деталь">
+    <div class="номер">3 · панель выступающая</div>
+    <div class="панель выступ">
+      <div class="подпись">то же самое наоборот</div>
+    </div>
+    <div class="код">.панель.выступ</div>
+  </div>
+
+  <!-- 4 · клетка -->
+  <div class="деталь">
+    <div class="номер">4 · клетка</div>
+    <div class="показ">
+      <button class="клетка"></button>
+      <button class="клетка">★</button>
+      <button class="клетка выбрана">★</button>
+      <button class="клетка нет">✕</button>
+    </div>
+    <div class="код">.клетка · .клетка.выбрана · .клетка.нет</div>
+  </div>
+
+  <!-- 5 · сетка клеток -->
+  <div class="деталь">
+    <div class="номер">5 · сетка клеток</div>
+    <div class="сетка">
+      <button class="клетка">★</button>
+      <button class="клетка"></button>
+      <button class="клетка выбрана">★</button>
+      <button class="клетка нет"></button>
+    </div>
+    <div class="код">.сетка &gt; .клетка</div>
+  </div>
+
+  <!-- 6 · кнопка -->
+  <div class="деталь">
+    <div class="номер">6 · кнопка</div>
+    <div class="показ">
+      <button class="кнопка">Войти</button>
+      <button class="кнопка нажата">Нажата</button>
+      <button class="кнопка" disabled>Нельзя</button>
+    </div>
+    <div class="код">.кнопка · .кнопка.нажата · [disabled]</div>
+  </div>
+
+  <!-- 7 и 8 · заголовок и подпись -->
+  <div class="деталь">
+    <div class="номер">7 · заголовок</div>
+    <div class="панель">
+      <div class="заголовок">Ближний круг</div>
+      <div class="заголовок мелкий">Дом Тишины</div>
+    </div>
+    <div class="код">.заголовок · .заголовок.мелкий</div>
+  </div>
+
+  <div class="деталь">
+    <div class="номер">8 · подпись</div>
+    <div class="панель">
+      <div class="подпись">аэльв · Древостой · 3 из 4</div>
+    </div>
+    <div class="код">.подпись</div>
+  </div>
+
+  <!-- 9 · полоска -->
+  <div class="деталь">
+    <div class="номер">9 · полоска</div>
+    <div class="полоска">
+      <div class="заполнение" style="width:64%"></div>
+      <div class="число">64 из 100</div>
+    </div>
+    <div class="код">.полоска &gt; .заполнение · .число</div>
+  </div>
+
+  <!-- 10 · окошко -->
+  <div class="деталь">
+    <div class="номер">10 · окошко поверх</div>
+    <div class="показ">
+      <button class="кнопка" id="открыть">Показать окошко</button>
+    </div>
+    <div class="код">dialog.окошко</div>
+  </div>
+
+  <!-- 11 · портрет в оправе -->
+  <div class="деталь">
+    <div class="номер">11 · портрет в оправе</div>
+    <div class="показ">
+      <div class="оправа"><div class="лицо"></div></div>
+      <div class="оправа" style="width:70px"><div class="лицо"></div></div>
+    </div>
+    <div class="код">.оправа &gt; .лицо</div>
+  </div>
+
+  <!-- 12 · точки страниц -->
+  <div class="деталь">
+    <div class="номер">12 · ряд точек</div>
+    <div class="точки">
+      <i class="точка текущая"></i>
+      <i class="точка"></i><i class="точка"></i><i class="точка"></i>
+      <i class="точка"></i><i class="точка"></i>
+    </div>
+    <div class="код">.точки &gt; .точка · .точка.текущая</div>
+  </div>
+
+  <!-- разделитель -->
+  <div class="деталь">
+    <div class="номер">разделитель</div>
+    <div class="рельс"></div>
+    <div class="код">.рельс</div>
+  </div>
+
+  <p class="автор">
+    Рисунки — <b>RPG GUI construction kit</b>, автор <b>Lamoot</b>,
+    OpenGameArt, лицензия CC-BY 3.0. Шрифт заголовков — Forum,
+    автор Денис Машаров, лицензия OFL.
+  </p>
+
+</div>
+
+<dialog class="окошко" id="окошко">
+  <div class="заголовок мелкий">Свободное место</div>
+  <p class="подпись" style="margin:8px 0 14px">Здесь будет твоя лавка.
+    Поставить её можно будет позже, когда мир откроется.</p>
+  <div class="строка">
+    <button class="кнопка" id="закрыть">Закрыть</button>
+  </div>
+</dialog>
+
+<script>
+  // Единственный скрипт на странице: показать и закрыть окошко.
+  const окошко = document.getElementById('окошко');
+  document.getElementById('открыть').addEventListener('click', () => окошко.showModal());
+  document.getElementById('закрыть').addEventListener('click', () => окошко.close());
+</script>
+</body>
+</html>

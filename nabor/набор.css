@@ -1,0 +1,293 @@
+/*
+  набор.css — ВСЁ ОФОРМЛЕНИЕ ПРОЕКТА в одном файле.
+
+  Так задумано: до сих пор у каждого экрана было своё оформление,
+  правишь один — остальные отстают. Теперь детали живут здесь, а экраны
+  получают только раскладку: где что стоит, и ничего больше.
+
+  Рисунки — набор «RPG GUI construction kit» художника Lamoot,
+  OpenGameArt, лицензия CC-BY 3.0. Автора упомянуть обязательно —
+  строка стоит внизу страницы-образца и должна остаться в продукте.
+
+  Крупные рамки берутся картинками и режутся на девять частей: резное
+  дерево и кованый край средствами CSS не вычисляются. Тенями делаются
+  только мелочи — утопленные клетки, вдавленная кнопка, ободок.
+
+  Середина панели — не растянутая картинка, а повторяющийся кусок
+  дерева в три килобайта.
+*/
+
+/* ═══ ГАММА ═══ меняешь здесь — меняется всё ═══════════════════════ */
+:root {
+  --фон:      #0e0c0a;   /* тёплый уголь, не синева */
+  --дерево:   #2a1f16;
+  --поле:     #17130f;
+  --золото:   #d4af6a;   /* надписи и главное */
+  --металл:   #b99a58;   /* рамки и разделители */
+  --огонёк:   #f0b95c;   /* свет в открытых ларьках */
+  --текст:    #e8ddc8;
+  --тусклый:  #8a7c68;
+  --тревога:  #c4674a;
+
+  /* тени: одна тёмная сверху-слева, одна светлая снизу-справа */
+  --тень-тёмная: rgba(0, 0, 0, .65);
+  --тень-светлая: rgba(232, 221, 200, .13);
+
+  /* размеры */
+  --палец: 44px;         /* меньше этого ничего нажимаемого не делаем */
+  --рамка-панели: 12px;
+  --рамка-плиты: 10px 44px;
+  --зазор: 10px;
+}
+
+@font-face {
+  font-family: 'Forum';
+  src: url('картинки/forum-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Forum';
+  src: url('картинки/forum-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+2000-206F, U+2122, U+2212;
+  font-display: swap;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--фон);
+  color: var(--текст);
+  font: 400 15px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* ═══ ЗАГОЛОВОК И ПОДПИСЬ ═════════════════════════════════════════ */
+
+/* Золото с тёмной обводкой: обводка нужна, чтобы надпись читалась
+   поверх текстуры, а не только на ровном фоне. */
+.заголовок {
+  font-family: 'Forum', Georgia, serif;
+  color: var(--золото);
+  font-size: 21px;
+  font-weight: 400;
+  letter-spacing: .04em;
+  text-shadow:
+     1px 0 0 #120d08,  -1px 0 0 #120d08,
+     0 1px 0 #120d08,   0 -1px 0 #120d08,
+     0 2px 3px rgba(0, 0, 0, .8);
+}
+.заголовок.мелкий { font-size: 16px; }
+
+.подпись {
+  font-size: 11.5px;
+  color: var(--тусклый);
+  letter-spacing: .06em;
+}
+
+/* ═══ ПАНЕЛЬ ══════════════════════════════════════════════════════
+   Рамка — картинка на девять частей, середина — повторяющееся дерево.
+   Растянутая на всю панель картинка мылится и весит, кусок в три
+   килобайта не делает ни того, ни другого. */
+.панель {
+  border: var(--рамка-панели) solid transparent;
+  border-image: url('картинки/панель.png') 12 round;
+  background: url('картинки/дерево.png') repeat;
+  background-clip: padding-box;
+  padding: var(--зазор);
+}
+
+/* Утоплено: тёмная тень по верху и левому краю, светлая полоска по
+   низу и правому, плюс общее затемнение внутрь. Без затемнения на
+   текстуре дерева тени теряются, а различаться они обязаны с одного
+   взгляда — это пункт приёмки. */
+.утоплена {
+  box-shadow:
+    inset 3px 3px 0 var(--тень-тёмная),
+    inset -2px -2px 0 var(--тень-светлая),
+    inset 0 0 22px rgba(0, 0, 0, .55);
+}
+/* Выступает: то же самое наоборот, и подсветка вместо затемнения. */
+.выступ {
+  box-shadow:
+    inset -3px -3px 0 var(--тень-тёмная),
+    inset 2px 2px 0 var(--тень-светлая),
+    inset 0 12px 20px rgba(232, 221, 200, .07);
+}
+
+/* ═══ КЛЕТКА ══════════════════════════════════════════════════════
+   Повторение одной простой формы читается как система, а не как
+   набросок. Размер не меньше пальца. */
+.клетка {
+  width: var(--палец);
+  height: var(--палец);
+  border: 0;
+  background: url('картинки/слот.png') center / 100% 100% no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  color: var(--текст);
+  cursor: pointer;
+  padding: 0;
+}
+.клетка.выбрана {
+  background-image: url('картинки/слот-выбран.png');
+  box-shadow: 0 0 0 1px var(--металл), 0 0 9px rgba(240, 185, 92, .45);
+  color: var(--огонёк);
+}
+.клетка.нет     { background-image: url('картинки/слот-нет.png'); cursor: default; }
+.клетка.нет     { color: var(--тусклый); }
+
+.сетка {
+  display: grid;
+  grid-template-columns: repeat(4, var(--палец));
+  gap: 8px;
+}
+
+/* ═══ КНОПКА ══════════════════════════════════════════════════════ */
+.кнопка {
+  border-style: solid;
+  border-color: transparent;
+  border-width: var(--рамка-плиты);
+  border-image: url('картинки/плита.png') 10 44 round;
+  background: url('картинки/дерево.png') repeat;
+  background-clip: padding-box;
+  min-height: var(--палец);
+  padding: 4px 6px;
+  font-family: 'Forum', Georgia, serif;
+  font-size: 16px;
+  color: var(--золото);
+  text-shadow: 0 1px 0 #120d08;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Вдавленная: тень внутрь и содержимое на точку ниже. */
+.кнопка:active, .кнопка.нажата {
+  box-shadow: inset 2px 2px 3px rgba(0, 0, 0, .7);
+  padding-top: 5px;
+  padding-bottom: 3px;
+}
+.кнопка:disabled, .кнопка.нельзя {
+  border-image-source: url('картинки/плита-тихая.png');
+  color: var(--тусклый);
+  cursor: default;
+}
+
+/* ═══ ПОЛОСКА ═════════════════════════════════════════════════════ */
+.полоска {
+  position: relative;
+  height: 22px;
+  background: var(--поле);
+  box-shadow:
+    inset 2px 2px 0 var(--тень-тёмная),
+    inset -1px -1px 0 var(--тень-светлая);
+  border: 1px solid #0a0705;
+}
+.полоска .заполнение {
+  height: 100%;
+  background: linear-gradient(var(--огонёк), var(--металл));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25);
+}
+/* Ободок вокруг числа: тень наружу, чтобы цифра читалась на заливке. */
+.полоска .число {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--текст);
+  text-shadow: 0 0 3px #000, 0 1px 0 #000;
+}
+
+/* ═══ ОПРАВА ПОРТРЕТА ═════════════════════════════════════════════
+   Рамка прямоугольная, а сам портрет обрезан аркой — как в образце. */
+.оправа {
+  width: 96px;
+  border: var(--рамка-панели) solid transparent;
+  border-image: url('картинки/панель.png') 12 round;
+  background: url('картинки/дерево.png') repeat;
+  background-clip: padding-box;
+  padding: 4px;
+}
+.оправа .лицо {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 50% 50% 6px 6px / 42% 42% 6px 6px;
+  background: radial-gradient(circle at 50% 32%, #2b231a 0%, #120e0a 78%);
+  box-shadow: inset 0 0 0 1px #0a0705, inset 2px 2px 6px rgba(0, 0, 0, .75);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+}
+.оправа .лицо img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ═══ РЯД ТОЧЕК ═══════════════════════════════════════════════════ */
+.точки { display: flex; gap: 8px; align-items: center; }
+.точка {
+  width: 14px; height: 14px;
+  background: url('картинки/бобышка-тихая.png') center / 100% 100% no-repeat;
+}
+.точка.текущая {
+  width: 18px; height: 18px;
+  background-image: url('картинки/бобышка.png');
+}
+
+/* ═══ РАЗДЕЛИТЕЛЬ ═════════════════════════════════════════════════ */
+/* Растягиваем, а не повторяем: у картинки прозрачные концы, и повтор
+   давал пунктир вместо сплошной линии. */
+.рельс {
+  height: 8px;
+  background: url('картинки/рельс.png') no-repeat center / 100% 100%;
+  opacity: .85;
+}
+
+/* ═══ ОКОШКО ══════════════════════════════════════════════════════
+   Родное dialog: Esc закрывает, палец не проваливается на фон,
+   чтение с экрана работает — и всё это без единой зависимости. */
+dialog.окошко {
+  border: var(--рамка-панели) solid transparent;
+  border-image: url('картинки/панель.png') 12 round;
+  background: url('картинки/дерево.png') repeat;
+  background-clip: padding-box;
+  color: var(--текст);
+  padding: 14px;
+  max-width: 300px;
+  width: calc(100% - 32px);
+}
+dialog.окошко::backdrop { background: rgba(0, 0, 0, .68); }
+
+/* ═══ КОНСОЛЬ ═════════════════════════════════════════════════════
+   Нижняя полоса в три зоны. Именно она даёт дорогой вид, а карта
+   может быть скромной — разбор в docs/облик.md.
+
+   Высота держится в пределах 110–130: на телефоне стоймя большая доля
+   съела бы половину экрана. */
+.консоль {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: var(--зазор);
+  align-items: center;
+  height: 122px;
+  border-style: solid;
+  border-color: transparent;
+  border-width: var(--рамка-плиты);
+  border-image: url('картинки/плита.png') 10 44 round;
+  background: url('картинки/дерево.png') repeat;
+  background-clip: padding-box;
+  padding: 6px 8px;
+}
+.консоль .зона { display: flex; flex-direction: column; gap: 5px; }
+.консоль .зона.середина { align-items: center; justify-content: center; }
+.консоль .окно-карты {
+  width: 78px; height: 78px;
+  background: radial-gradient(circle at 50% 50%, #241c14 0%, #100c09 80%);
+  box-shadow:
+    inset 2px 2px 0 var(--тень-тёмная),
+    inset -1px -1px 0 var(--тень-светлая);
+  display: flex; align-items: center; justify-content: center;
+}
