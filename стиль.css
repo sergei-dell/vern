@@ -1,14 +1,13 @@
 /*
-  стиль.css — ОФОРМЛЕНИЕ. Отступы, размеры, рамки, шрифты.
+  стиль.css — ОБЩЕЕ ОФОРМЛЕНИЕ мира-витрины.
 
-  Цвета сюда не вписаны почти нигде: они приходят из темы Телеграма и
-  подставляются в переменные --фон, --текст и остальные из герой.js.
-  Вне Телеграма подставляется запасная тема из настройки.js.
+  Цвета приходят из темы Телеграма и подставляются в переменные из
+  ход.js. Вне Телеграма берётся запасная тема из настройки.js.
 
-  Исключение — оттенок народа: он свой у каждого народа и приходит из
-  мир.js, попадая в переменную --оттенок.
+  Отдельный вид каждого кольца — в страницы.css. Здесь только то, что
+  одинаково везде: раскладка, карточки, стол, чат, окошко.
 
-  Всё плоское: ни теней, ни объёма, ни движения. Проверять на 360.
+  Всё плоское. Движение только как отклик на нажатие.
 */
 
 /* ═══ ОБЛИК ═══════════════════════════════════════════════════════════
@@ -46,49 +45,47 @@
 }
 
 :root {
+  /* Гамма взята из работа/симулятор.html — там вид утверждён.
+     Мятного нет нигде: он остался только отметкой занятости за столом. */
+  --снег:       #b3c4dd;
+  --снег-свет:  #c6d4e8;
+  --тень:       #4a5570;
+  --камень:     #3f4a66;
+  --камень-св:  #5d6a8c;
+  --ночь:       #0b0f1c;
+  --тепло:      #e09a3a;
+  --тепло-св:   #ffc978;
+  --дерево:     #6b4a22;
+
+  --фон:        #0b0f1c;
+  --поле:       #17130f;
+  --текст:      #c6d4e8;
+  --тусклый:    #8fa0c4;
+  --кнопка:     #e09a3a;
+  --текст-кнопки: #1a1206;
+  --тревога:    #c4674a;
+  --металл:     #b99a58;
+
+  --кольцо:     #e09a3a;
+  --кольцо-фон: #17130f;
+  --кольцо-рамка: #4c587a;
+
+  --радиус: 0px;
+  --поле-окна: 0px;
+
+  /*  ЗАГОЛОВОЧНЫЙ ШРИФТ. Раньше эта строка отсутствовала, а
+      var(--заголовки) ниже использовался — Forum грузился и не
+      применялся ни к одному заголовку. Разбор в ЖУРНАЛ.md.        */
   --заголовки: 'Forum', Georgia, 'Times New Roman', serif;
-  --металл: #b99a58;
-  /* рамка занимает шестнадцать точек — ровно треть картинки, один к
-     одному, поэтому пиксели не мылятся */
+
+  /*  Рамка занимает шестнадцать точек — ровно треть картинки, один
+      к одному, поэтому точки не мылятся.                          */
   --рамка: 16px;
   --рамка-мелкая: 8px;
-}
 
-.рамка-панель, .рамка-важная, .рамка-кнопка, .рамка-поле {
-  border-style: solid;
-  border-color: transparent;
-  border-radius: 0;
-  image-rendering: pixelated;
-}
-.рамка-панель {
-  border-width: var(--рамка);
-  border-image: url('облик/рамка-панель.png') 16 round;
-}
-.рамка-важная {
-  border-width: var(--рамка);
-  border-image: url('облик/рамка-важная.png') 16 round;
-}
-.рамка-кнопка {
-  border-width: var(--рамка-мелкая);
-  border-image: url('облик/рамка-кнопка.png') 16 round;
-}
-.рамка-поле {
-  border-width: var(--рамка-мелкая);
-  border-image: url('облик/рамка-поле.png') 16 round;
-}
-
-:root {
-  --фон: #0b0f14;
-  --поле: #12161c;
-  --текст: #e8f4f8;
-  --тусклый: #7a8894;
-  --кнопка: #2dd4bf;
-  --текст-кнопки: #0b0f14;
-  --тревога: #e2725b;
-  --оттенок: #2dd4bf;
-
-  --радиус: 10px;
-  --поле-окна: 16px;
+  /*  Оттенок народа. Подставляется кодом при выборе народа, здесь
+      стоит значение на случай, когда народ ещё не выбран.         */
+  --оттенок: #e09a3a;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -96,194 +93,389 @@
 body {
   background: var(--фон);
   color: var(--текст);
-  font: 400 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  display: flex;
-  justify-content: center;
+  font: 400 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  display: flex; justify-content: center;
   padding: var(--поле-окна);
   padding-bottom: calc(var(--поле-окна) + env(safe-area-inset-bottom, 0px));
   min-height: 100vh;
   -webkit-text-size-adjust: 100%;
+  overscroll-behavior-x: none;
 }
 
 .окно { width: 100%; max-width: 380px; }
 [hidden] { display: none !important; }
 
-/* ── общие мелочи ───────────────────────────────────────────────── */
-h2 {
-  font-size: 13px; font-weight: 400; color: var(--тусклый);
-  margin: 0 0 8px;
-}
-/* Заголовочный шрифт только в заголовках и названиях: основной текст
-   остаётся обычным, иначе его перестают читать. */
-.крупно, .надмир, .итог-низ h1, .сводка b, .превью-текст b,
-.навсегда b, .блок-мир h2, .народ b, .кн { font-family: var(--заголовки); }
+h2 { font-size: 13px; font-weight: 400; color: var(--тусклый); margin: 18px 0 8px; }
+/* Заголовочный шрифт только в заголовках и названиях. */
+.крупно, .надмир, .шапка h1, .место .название, .стол-строка b,
+.окошко h2, .герой-полоска b, .круг-стола .середина, .кн, .квартал
+  { font-family: var(--заголовки); }
 .надмир { color: var(--металл); }
 .тускло { color: var(--тусклый); }
-.мелко { font-size: 13px; }
+.мелко { font-size: 12.5px; }
 .по-центру { text-align: center; }
-.заметка {
-  font-size: 11.5px; color: var(--тусклый); opacity: .75;
-  text-align: center; margin-top: 14px; line-height: 1.6;
-  white-space: pre-line;
-}
-.заметка.снизу { margin-top: 22px; }
 
-/* ── вступление ─────────────────────────────────────────────────── */
-.вступление { text-align: center; padding: 44px 0 28px; }
+/* честная строка, обязана быть на каждом экране */
+.пример {
+  font-size: 11px; color: var(--тусклый); opacity: .6;
+  text-align: center; margin-top: 22px; line-height: 1.5;
+}
+
+/* ── ворота ─────────────────────────────────────────────────────── */
+.ворота { text-align: center; padding: 46px 0 26px; }
 .надмир {
   font-size: 11px; color: var(--тусклый); opacity: .7;
   letter-spacing: .22em; margin-bottom: 10px;
 }
-.крупно {
-  font-size: 26px; font-weight: 500; line-height: 1.3;
-  white-space: pre-line;
-}
-.вступление p { font-size: 14px; margin-top: 14px; line-height: 1.6; }
+.крупно { font-size: 26px; font-weight: 500; line-height: 1.3; white-space: pre-line; }
+.ворота p { font-size: 14px; margin-top: 14px; line-height: 1.6; }
 
-/* ── полоска шагов ──────────────────────────────────────────────── */
-.полоска { display: flex; gap: 4px; margin-bottom: 16px; }
-.полоска i {
-  flex: 1; height: 3px; border-radius: 2px;
-  background: var(--поле);
-}
-.полоска i.есть { background: var(--оттенок); }
-
-/* ── живой предпросмотр ─────────────────────────────────────────── */
-.превью {
+.герой-полоска {
+  display: flex; align-items: center; gap: 10px;
   background: var(--поле);
   background-clip: padding-box;
   border-style: solid; border-color: transparent; border-radius: 0;
   image-rendering: pixelated;
-  border-width: var(--рамка);
-  border-image: url('облик/рамка-панель.png') 16 round;
-  padding: 6px 8px; display: flex; gap: 12px; align-items: center;
-  margin-bottom: 14px;
+  border-width: var(--рамка-мелкая);
+  border-image: url('облик/рамка-поле.png') 16 round;
+  padding: 6px 8px; margin-bottom: 12px;
 }
-.превью-текст { min-width: 0; }
-.превью-текст b { display: block; font-size: 15px; font-weight: 500; }
-.превью-текст span {
-  display: block; font-size: 12px; color: var(--тусклый); margin-top: 2px;
-}
+.герой-полоска img { width: 38px; height: 38px; border-radius: 8px; object-fit: cover; }
+.герой-полоска b { font-size: 14px; font-weight: 500; display: block; }
+.герой-полоска span { font-size: 12px; color: var(--тусклый); }
 
-.знак {
-  flex: none; width: 56px; height: 56px;
-  background: var(--фон); background-clip: padding-box;
+/* ── шапка ──────────────────────────────────────────────────────── */
+.шапка {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+}
+.шапка h1 {
+  flex: 1; text-align: center; font-size: 22px; font-weight: 400;
+  letter-spacing: .06em; color: var(--текст);
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.стрелка {
+  flex: none; width: 40px; height: 40px;
+  background: var(--поле); background-clip: padding-box; color: var(--металл);
   border-style: solid; border-color: transparent; border-radius: 0;
   border-width: var(--рамка-мелкая); image-rendering: pixelated;
   border-image: url('облик/рамка-тихая.png') 16 round;
-  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-family: inherit; cursor: pointer;
 }
-.народ.выбран .знак { border-image: url('облик/рамка-поле.png') 16 round; }
-.знак.крупный { width: 64px; height: 64px; margin: 0 auto 10px; }
-.знак svg { display: block; }
+.стрелка:disabled { opacity: .3; pointer-events: none; }
+.стрелка.пусто { background: none; pointer-events: none; }
 
-/* ── выбор ──────────────────────────────────────────────────────── */
-.ряд { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+/* ── кварталы ───────────────────────────────────────────────────── */
+.кварталы { display: flex; gap: 5px; margin-bottom: 14px; flex-wrap: wrap; }
+.квартал {
+  flex: 1; min-width: 62px; display: flex; flex-direction: column;
+  align-items: center; gap: 3px; padding: 8px 4px; border-radius: 9px;
+  background: var(--поле); color: var(--тусклый); font-size: 11.5px;
+  border: 1px solid transparent; cursor: pointer; user-select: none;
+}
+.квартал.выбран {
+  border-color: transparent; color: var(--текст);
+  border-width: var(--рамка-мелкая); image-rendering: pixelated;
+  border-image: url('облик/рамка-поле.png') 16 round;
+  padding: 4px 2px;
+}
+.квартал.закрыт { opacity: .35; cursor: default; }
 
-.вар {
-  flex: 1; min-width: 64px; text-align: center; padding: 10px 6px;
-  border-radius: 8px; background: var(--поле); color: var(--тусклый);
-  font-size: 13px; cursor: pointer; border: 1px solid transparent;
-  user-select: none;
+/* ── карта мира ─────────────────────────────────────────────────────
+   Двор во весь экран. Мир — один svg на 1900×1900, камера двигает его
+   через viewBox: так линии остаются чёткими на любом приближении.
+
+   Свет всегда слева сверху: у всех построек светлый скат слева,
+   тёмный справа. Разнобой первым выдаёт самоделку.                  */
+
+#э-карта { position: fixed; inset: 0; }
+
+.двор {
+  position: absolute; inset: 0;
+  background: var(--ночь);
+  touch-action: none; cursor: grab;
+  overflow: hidden;
 }
-.вар.выбран {
-  background: var(--оттенок); color: var(--текст-кнопки); font-weight: 500;
+.мир { width: 100%; height: 100%; display: block; }
+
+.лес { fill: #1e2a1c; }
+
+/* дороги: светлая протоптанная полоса по земле */
+.дорога { fill: none; stroke: #7d8496; }
+.дорога.кольцевая { stroke-width: 26; opacity: .5; }
+.дорога.лучевая   { stroke-width: 18; opacity: .42; }
+.дорога.тропка    { stroke-width: 10; opacity: .3; }
+
+/* Окно дома названо «оконце»: класс «окно» уже занят обёрткой
+   страницы с шириной 100%, а css-ширина действует и на svg — окна
+   растягивало во всю карту.
+
+   ── дом ─────────────────────────────────────────────────────────────
+   Занятость читается температурой: открыт — тёплый, окна горят;
+   закрыт — те же стены темнее и окна чёрные; свободно — холодный
+   каркас. Подписи только подтверждают. */
+.дом { cursor: pointer; }
+.дом .площадка { fill: #10131c; opacity: .55; }
+.дом .стены { fill: #6b4a22; }
+.дом .стены-тень { fill: #4a3218; }
+.дом .поясок { stroke: #8a5c22; stroke-width: 2; fill: none; }
+.дом .скат-свет { fill: #a8452c; }
+.дом .скат-тень { fill: #71301f; }
+.дом .труба { fill: #4a3218; }
+.дом .оконце { fill: #ffc978; }
+
+.дом.открыт .площадка { fill: #ffb347; opacity: .16; }
+
+.дом.закрыт .стены { fill: #45301a; }
+.дом.закрыт .стены-тень { fill: #2f2011; }
+.дом.закрыт .скат-свет { fill: #6d2f20; }
+.дом.закрыт .скат-тень { fill: #4a2016; }
+.дом.закрыт .оконце { fill: #0d1018; }
+.дом.закрыт .поясок { stroke: #5c3f1c; }
+
+.дом.свободно .площадка { fill: #2f3950; opacity: .7; }
+.дом.свободно .каркас {
+  stroke: #6b7796; stroke-width: 5; fill: none; stroke-linecap: round;
 }
 
-.цвет {
-  flex: 1; height: 38px; border-radius: 8px; cursor: pointer;
-  border: 2px solid transparent;
-}
-.цвет.выбран { border-color: var(--текст); }
+/* ── вывеска ──────────────────────────────────────────────────────── */
+.вывеска { pointer-events: none; }
+.вывеска .значок { color: var(--тепло-св); stroke: currentColor;
+  stroke-width: 1.6; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.вывеска .имя { fill: #e8c98f; font-size: 19px; }
+.вывеска .занятие { fill: #9a8a6c; font-size: 14px; }
+.вывеска.закрыт .имя { fill: #9a8a6c; }
+.вывеска.закрыт .значок { color: #7a6a54; }
+.вывеска.свободно .имя { fill: var(--текст); }
+.вывеска.свободно .занятие { fill: var(--тусклый); }
 
-.народ {
-  display: flex; gap: 10px; align-items: center;
-  background: var(--поле); background-clip: padding-box; margin-bottom: 8px;
-  cursor: pointer; border-style: solid; border-color: transparent;
-  border-radius: 0; image-rendering: pixelated;
-  border-width: var(--рамка-мелкая);
-  border-image: url('облик/рамка-тихая.png') 16 round;
-  padding: 6px 8px;
-}
-/* выбранный народ обводится полной резной рамкой — разница видна */
-.народ.выбран {
-  border-width: var(--рамка);
-  border-image: url('облик/рамка-панель.png') 16 round;
-  padding: 0 4px;
-}
-.народ b { font-size: 15px; font-weight: 500; }
-.народ span {
-  font-size: 12px; color: var(--тусклый); display: block;
-  margin-top: 3px; line-height: 1.45;
+/* ── столб ────────────────────────────────────────────────────────── */
+.столб { cursor: pointer; color: #9db0d0; }
+.столб use { stroke: currentColor; stroke-width: 1.6; fill: none;
+  stroke-linecap: round; stroke-linejoin: round; }
+.столб .ловушка { fill: transparent; }
+
+/* ── герой на карте ─────────────────────────────────────────────────
+
+   ОСТОРОЖНО: цвета фигурки задаются в разметке, потому что приходят
+   из записи героя — плащ, кожа, волосы у каждого свои. Правило вида
+   `.тулово circle { fill: ... }` перебивает атрибут fill в разметке
+   и красит всех героев одинаково. Здесь такого правила больше нет и
+   быть не должно.                                                  */
+.герой-на-карте .тень-героя { fill: #000; opacity: .38; }
+.герой-на-карте .тулово { stroke-linecap: round; stroke-linejoin: round; }
+.герой-на-карте .ободок    { stroke: var(--металл); }
+.герой-на-карте .знак-народа { stroke: var(--металл); opacity: .75; }
+
+/* ── поверх карты ─────────────────────────────────────────────────── */
+.мгла {
+  position: absolute; inset: 0; pointer-events: none;
+  box-shadow: inset 0 0 80px 26px #000; opacity: .34;
 }
 
-/* ── имя ────────────────────────────────────────────────────────── */
-input {
-  width: 100%; background: var(--поле); padding: 7px 9px; color: var(--текст);
-  font-size: 16px; font-family: inherit; line-height: 1.4; outline: none;
+.плашка-героя {
+  position: absolute; top: 12px; left: 12px; display: flex; gap: 7px;
+  align-items: center;
+  background: #0b0f1ce6; border: 1px solid #4c587a; padding: 5px 9px 5px 5px;
+}
+.плашка-героя img, .плашка-героя .знак {
+  width: 30px; height: 30px; background: #2a2418; border: 1px solid var(--тепло);
+  object-fit: cover; display: block;
+}
+.плашка-героя b { font-size: 11px; color: #e8c98f; font-weight: 400; display: block; }
+.плашка-героя span { font-size: 9px; color: var(--тусклый); }
+
+.кольца-кнопки {
+  position: absolute; top: 12px; right: 12px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.кольца-кнопки button {
+  width: 44px; height: 44px; background: #0b0f1ce6; border: 1px solid #4c587a;
+  color: #e8c98f; font-size: 18px; line-height: 1; cursor: pointer; padding: 0;
+}
+
+.к-герою {
+  position: absolute; right: 12px; bottom: 76px;
+  width: 52px; height: 52px; border-radius: 50%;
+  background: #0b0f1ce6; border: 1px solid var(--тепло);
+  color: var(--тепло-св); cursor: pointer; padding: 0;
+}
+.к-герою::before { content: '◎'; font-size: 22px; line-height: 1; }
+
+/*  «Переделать героя» — только в мире, мелко, в углу. По заданию она
+    не должна спорить с картой, поэтому стоит тише всего остального:
+    без рамки и в тусклом цвете.                                    */
+.переделать {
+  /* на одной высоте с кружком «к герою» справа: ниже уже стоит
+     строка про вымышленных обитателей, и они бы наехали друг на друга */
+  position: absolute; left: 12px; bottom: 76px;
+  background: #0b0f1cd9; border: none; padding: 7px 10px;
+  font-family: inherit; font-size: 11px; color: var(--тусклый);
+  cursor: pointer; letter-spacing: .02em;
+}
+.переделать:hover { color: var(--тепло-св); }
+
+/* плашка героя открывает его карточку — значит она нажимаемая */
+.плашка-героя { cursor: pointer; }
+
+.полоса {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  background: #0b0f1cf2; border-top: 1px solid var(--дерево);
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+  font-size: 13px; color: #e8c98f; line-height: 1.5;
+}
+
+/* Честная строка о вымышленных обитателях лежит на своей подложке:
+   без неё она налезала на вывески и читалась как часть мира. */
+#э-карта .пример {
+  position: absolute; left: 0; right: 0; bottom: 0; margin: 0;
+  pointer-events: none;
+  background: linear-gradient(transparent, #0b0f1ce6 40%);
+  padding: 14px 12px calc(6px + env(safe-area-inset-bottom, 0px));
+}
+
+/* ── точки страниц ──────────────────────────────────────────────── */
+.точки {
+  display: flex; justify-content: center; align-items: center;
+  gap: 7px; margin-top: 16px;
+}
+.точки i {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--тусклый); opacity: .35;
+}
+.точки i.открыта { opacity: .8; }
+.точки i.текущая {
+  background: none; border: 2px solid var(--кольцо); opacity: 1;
+  width: 9px; height: 9px;
+}
+.точки i.закрыта { width: 5px; height: 5px; opacity: .2; }
+
+/* ── лавка ──────────────────────────────────────────────────────── */
+.хозяин {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; color: var(--кольцо);
+}
+.описание { font-size: 13.5px; color: var(--тусклый); margin-top: 8px; line-height: 1.5; }
+
+.стол-строка {
+  background: var(--поле);
   background-clip: padding-box;
   border-style: solid; border-color: transparent; border-radius: 0;
   image-rendering: pixelated;
   border-width: var(--рамка-мелкая);
   border-image: url('облик/рамка-тихая.png') 16 round;
+  padding: 6px 8px; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 10px;
 }
-input:focus { border-image: url('облик/рамка-поле.png') 16 round; }
-.ошибка {
-  color: var(--тревога); font-size: 12.5px; margin-top: 7px; min-height: 17px;
+.стол-строка .о-столе { flex: 1; min-width: 0; }
+.стол-строка b { font-size: 14px; font-weight: 500; display: block; }
+.стол-строка .кто { font-size: 12px; color: var(--тусклый); margin-top: 3px;
+  display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+.стол-строка .ставка { font-size: 12px; color: var(--кольцо); margin-top: 2px; }
+
+/* ── стол ───────────────────────────────────────────────────────── */
+.круг-стола {
+  position: relative; width: 100%; aspect-ratio: 1 / 1;
+  max-width: 300px; margin: 4px auto 0;
+}
+.круг-стола .середина {
+  position: absolute; inset: 22%; border-radius: 50%;
+  background: var(--поле); border: 1px solid var(--кольцо-рамка);
+  display: flex; align-items: center; justify-content: center;
+  text-align: center; font-size: 12px; color: var(--тусклый); padding: 8px;
+}
+/* Долю в проценты переводит оформление: в логике остаются числа
+   без единиц, а единицы живут там, где им место. */
+.место-за-столом {
+  position: absolute;
+  left: calc(var(--х) * 100%); top: calc(var(--у) * 100%);
+  width: calc(var(--размер) * 100%);
+  transform: translate(-50%, -50%);
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  text-align: center;
+}
+.место-за-столом .лицо {
+  width: 100%; aspect-ratio: 1 / 1; border-radius: 50%;
+  background: var(--поле); border: 1px solid var(--кольцо-рамка);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.место-за-столом .лицо img { width: 100%; height: 100%; object-fit: cover; }
+.место-за-столом.ходит .лицо { border-color: var(--кольцо); border-width: 2px; }
+.место-за-столом .подпись {
+  font-size: 10.5px; color: var(--тусклый); line-height: 1.2;
+  max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.место-за-столом.пустое .лицо { border-style: dashed; cursor: pointer; }
+.место-за-столом.пустое .подпись { color: var(--кольцо); }
+
+.чей-ход {
+  text-align: center; font-size: 13px; color: var(--кольцо);
+  margin-top: 10px; min-height: 20px;
 }
 
-/* ── свободное описание ─────────────────────────────────────────── */
-.предупреждение {
-  font-size: 12px; color: var(--тусклый); line-height: 1.45;
-  margin: -2px 0 8px;
+/* ── шахматы ────────────────────────────────────────────────────── */
+.доска {
+  display: grid; grid-template-columns: repeat(8, 1fr);
+  width: 100%; max-width: 340px; margin: 10px auto 0;
+  background-clip: padding-box;
+  border-style: solid; border-color: transparent; border-radius: 0;
+  image-rendering: pixelated;
+  border-width: var(--рамка);
+  border-image: url('облик/рамка-панель.png') 16 round;
 }
-textarea {
-  width: 100%; background: var(--поле); padding: 7px 9px; color: var(--текст);
-  font-size: 15px; font-family: inherit; line-height: 1.45;
-  outline: none; resize: none; display: block;
+.клетка {
+  aspect-ratio: 1 / 1; display: flex; align-items: center;
+  justify-content: center; font-size: 25px; line-height: 1;
+  cursor: pointer; user-select: none; position: relative;
+}
+.клетка.светлая { background: #3a4550; }
+.клетка.тёмная  { background: #232c35; }
+.клетка.выбрана { background: var(--кольцо); }
+.клетка.можно::after {
+  content: ''; position: absolute; width: 26%; height: 26%;
+  border-radius: 50%; background: var(--кольцо); opacity: .55;
+}
+.клетка.можно.занята::after {
+  width: 82%; height: 82%; background: none;
+  border: 2px solid var(--кольцо); opacity: .7;
+}
+.клетка .фигура { position: relative; z-index: 1; }
+.клетка.белая-фигура .фигура { color: #f2f5f7; }
+.клетка.чёрная-фигура .фигура { color: #10161c; }
+
+.итог-партии {
+  text-align: center; font-size: 14px; color: var(--кольцо);
+  margin-top: 10px; min-height: 20px;
+}
+
+/* ── разговор ───────────────────────────────────────────────────── */
+.разговор {
+  background: var(--поле);
+  background-clip: padding-box;
+  border-style: solid; border-color: transparent; border-radius: 0;
+  image-rendering: pixelated;
+  border-width: var(--рамка-мелкая);
+  border-image: url('облик/рамка-тихая.png') 16 round;
+  padding: 6px 8px; max-height: 190px; overflow-y: auto;
+}
+.реплика { font-size: 13px; margin-bottom: 7px; line-height: 1.45; }
+.реплика:last-child { margin-bottom: 0; }
+.реплика b { font-weight: 500; color: var(--кольцо); }
+.реплика.моя b { color: var(--текст); }
+
+.строка-чата { display: flex; gap: 7px; margin-top: 8px; }
+.строка-чата input {
+  flex: 1; min-width: 0; background: var(--поле);
+  padding: 6px 8px; color: var(--текст);
+  font-size: 15px; font-family: inherit; outline: none;
   background-clip: padding-box;
   border-style: solid; border-color: transparent; border-radius: 0;
   image-rendering: pixelated;
   border-width: var(--рамка-мелкая);
   border-image: url('облик/рамка-поле.png') 16 round;
 }
-.под-полем {
-  display: flex; justify-content: space-between; align-items: baseline;
-  gap: 8px; margin-top: 6px; margin-bottom: 10px;
-}
-.под-полем .ошибка { margin-top: 0; }
-.счёт { font-size: 12px; color: var(--тусклый); flex: none; }
-.счёт.много { color: var(--тревога); }
-.описание {
-  font-size: 13px; color: var(--тусклый); margin-top: 8px;
-  line-height: 1.5; font-style: italic;
-}
-
-/* ── подтверждение ──────────────────────────────────────────────── */
-.сводка {
-  background: var(--поле);
-  background-clip: padding-box;
-  border-style: solid; border-color: transparent; border-radius: 0;
-  image-rendering: pixelated;
-  border-width: var(--рамка);
-  border-image: url('облик/рамка-важная.png') 16 round;
-  padding: 10px; text-align: center;
-}
-.сводка b { display: block; font-size: 20px; font-weight: 500; }
-.сводка span {
-  display: block; font-size: 12.5px; color: var(--тусклый); margin-top: 4px;
-}
-.навсегда {
-  background: var(--поле); border-left: 2px solid var(--оттенок);
-  border-radius: 0 8px 8px 0; padding: 12px 14px; font-size: 13px;
-  color: var(--тусклый); line-height: 1.5; margin: 16px 0;
-}
-.навсегда b { display: block; color: var(--текст); margin-bottom: 3px; }
 
 /* ── кнопки ─────────────────────────────────────────────────────── */
-.кнопки { display: flex; gap: 8px; margin-top: 6px; }
-/* Кнопка сама по себе занимает всю ширину. Внутри ряда ширину делит
-   flex — иначе одиночная кнопка сжималась бы по тексту. */
 .кн {
   display: block; width: 100%; text-align: center; padding: 8px 0;
   font-size: 14px; font-family: var(--заголовки); letter-spacing: .02em;
@@ -294,67 +486,35 @@ textarea {
   border-width: var(--рамка-мелкая);
   border-image: url('облик/рамка-кнопка.png') 16 round;
 }
-.кнопки .кн { width: auto; flex: 1; }
-.кнопки .кн.тихая { flex: none; }
-/* Кнопка теперь тёмная с металлической рамкой, а не цветная заливка:
-   яркий прямоугольник под резной рамкой спорил сам с собой. */
-.кн.главная {
-  background: var(--поле); color: var(--металл); font-weight: 500;
-}
-.кн.тихая { background: var(--поле); color: var(--тусклый); padding: 8px 12px; }
-.кн.главная:disabled { color: var(--тусклый); }
-.кн.широкая { width: 100%; margin-top: 14px; }
+/* Тёмная панель с металлической рамкой вместо цветной заливки. */
+.кн.главная { background: var(--поле); color: var(--металл); font-weight: 500; }
+.кн.тихая { background: var(--поле); color: var(--тусклый); }
+.кн.мелкая { width: auto; padding: 9px 14px; font-size: 13px; flex: none; }
 .кн:disabled { opacity: .35; pointer-events: none; }
+.кнопки { display: flex; gap: 8px; margin-top: 14px; }
+.кнопки .кн { flex: 1; }
 
-.ссылка {
-  background: none; border: none; color: var(--тусклый);
-  font: inherit; font-size: 11.5px; text-decoration: underline;
-  cursor: pointer; padding: 0; display: block; margin: 0 auto 4px;
+/* ── окошко ─────────────────────────────────────────────────────── */
+.завеса {
+  position: fixed; inset: 0; background: rgba(0, 0, 0, .6);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px; z-index: 10;
 }
-
-/* ── готовый герой ──────────────────────────────────────────────── */
-.итог {
+.окошко {
   background: var(--поле);
   background-clip: padding-box;
   border-style: solid; border-color: transparent; border-radius: 0;
   image-rendering: pixelated;
   border-width: var(--рамка);
   border-image: url('облик/рамка-важная.png') 16 round;
-  overflow: hidden;
+  padding: 10px; width: 100%; max-width: 320px;
 }
-.портрет {
-  aspect-ratio: 1 / 1; background: var(--фон);
-  display: flex; align-items: center; justify-content: center;
-  border-bottom: 1px solid var(--оттенок);
-}
-.портрет img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.портрет .ждём { font-size: 12px; color: var(--тусклый); }
-.портрет .знак { width: 84px; height: 84px; border: none; background: none; }
+.окошко h2 { margin: 0 0 8px; color: var(--текст); font-size: 16px; font-weight: 500; }
+.окошко p { font-size: 13.5px; color: var(--тусклый); line-height: 1.5; }
 
-.итог-низ { padding: 14px 16px 16px; }
-.итог-низ h1 { font-size: 22px; font-weight: 500; }
-.род { font-size: 12px; color: var(--оттенок); margin-top: 3px; }
-.судьба { font-size: 13px; color: var(--тусклый); margin-top: 10px; line-height: 1.5; }
-.девиз { font-size: 12.5px; color: var(--тусклый); font-style: italic; margin-top: 9px; }
-.мир-подпись {
-  font-size: 10.5px; color: var(--тусклый); opacity: .6;
-  letter-spacing: .05em; margin-top: 14px;
-}
-
-.блок-мир {
-  background: var(--поле);
-  background-clip: padding-box;
-  border-style: solid; border-color: transparent; border-radius: 0;
-  image-rendering: pixelated;
-  border-width: var(--рамка);
-  border-image: url('облик/рамка-панель.png') 16 round;
-  padding: 2px 8px 8px; margin-top: 16px;
-}
-.блок-мир h2 { margin-bottom: 5px; }
-
-/* узкие телефоны: 360 и меньше */
 @media (max-width: 360px) {
-  body { padding: 12px; }
-  .вар { min-width: 56px; font-size: 12.5px; }
-  .итог-низ h1 { font-size: 20px; }
+  body { padding: 11px; }
+  .места { gap: 7px; }
+  .место { padding: 10px; min-height: 90px; }
+  .клетка { font-size: 22px; }
 }

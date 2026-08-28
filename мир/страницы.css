@@ -66,3 +66,104 @@
   --кольцо-фон: #0d0f11;
   --кольцо-рамка: #1e2320;
 }
+
+/* ═══ ЛАВКА · шахматы, таро, круг года ══════════════════════════════
+   Один экран на все три дела: шапка, описание, поле дела. Что внутри
+   поля — решает лавки.js.                                            */
+
+#дело { margin-top: 14px; }
+
+/*  Обязательная строка под гаданием. Не вежливость, а правило: гаданий
+    на здоровье мы не продаём. Оттого она не прячется и не мельчает
+    до нечитаемого.                                                   */
+.оговорка {
+  margin-top: 18px; padding: 10px 12px;
+  border-left: 2px solid var(--дерево);
+  font-size: 12px; line-height: 1.5; color: var(--тусклый);
+}
+
+/* ── таро ─────────────────────────────────────────────────────────── */
+
+.расклад {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin-top: 16px; justify-content: center;
+}
+
+.голос {
+  width: 100px; display: flex; flex-direction: column; gap: 6px;
+  align-items: center;
+}
+.место-голоса {
+  font-size: 10px; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--тусклый);
+}
+
+/*  Карта закрыта и открывается нажатием: мгновенный ответ гадание
+    обесценивает. Рубашка того же размера, что лицо, иначе расклад
+    прыгает при открытии.                                             */
+.рубашка, .лицо-голоса {
+  width: 100%; min-height: 168px; box-sizing: border-box;
+  background: var(--поле); padding: 8px 6px;
+  border-style: solid; border-color: transparent;
+  border-width: var(--рамка-мелкая);
+  border-image: url('../облик/рамка-поле.png') 16 round;
+  image-rendering: pixelated;
+}
+.рубашка {
+  font-family: var(--заголовки); font-size: 10px; color: var(--тусклый);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  text-align: center; line-height: 1.4;
+}
+.рубашка:hover { color: var(--тепло-св); }
+
+.лицо-голоса {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  text-align: center;
+}
+.лицо-голоса b {
+  font-family: var(--заголовки); font-size: 13px; font-weight: 400;
+  color: var(--тепло-св);
+}
+.лицо-голоса i { font-size: 9px; font-style: normal; color: var(--тревога); }
+.лицо-голоса p { font-size: 11px; line-height: 1.45; color: var(--текст); margin: 0; }
+
+.знак-голоса { stroke: var(--металл); width: 48px; height: 72px; }
+/* перевёрнутый Голос и знак показывает перевёрнутым — иначе слово
+   «перевёрнутый» приходится читать, а должно быть видно */
+.голос.наоборот .знак-голоса { transform: rotate(180deg); }
+
+/* ── круг года ────────────────────────────────────────────────────── */
+
+.строка-даты { display: flex; gap: 8px; align-items: stretch; }
+.строка-даты input {
+  /* min-width: 0 обязательно: у поля даты своя внутренняя ширина, и
+     без этого оно не даёт себя сжать, а кнопка уезжает за край */
+  flex: 1; min-width: 0;
+  background: var(--поле); color: var(--текст);
+  border: 1px solid var(--кольцо-рамка); padding: 8px 10px;
+  font-family: inherit; font-size: 15px;
+}
+.строка-даты .кн { flex: none; width: auto; padding: 8px 12px; font-size: 13px; }
+
+.ответ-круга:empty { display: none; }
+.знак-года b {
+  font-family: var(--заголовки); font-size: 20px; font-weight: 400;
+  color: var(--тепло-св); display: block;
+}
+.знак-года p { margin: 4px 0 0; font-size: 13px; color: var(--тусклый); }
+
+.слово-дня {
+  font-size: 14px; line-height: 1.6; color: var(--текст);
+  border-left: 2px solid var(--тепло); padding-left: 12px; margin: 0;
+}
+
+.круг-низ { margin-top: 20px; }
+.месяц-вэрна b, .луна-вэрна b {
+  font-family: var(--заголовки); font-size: 16px; font-weight: 400;
+  color: var(--тепло-св);
+}
+.месяц-вэрна, .луна-вэрна { margin: 0; line-height: 1.5; }
+
+/* доска в лавке. Имени у неё нет намеренно — на экране стола уже
+   занято «поле-игры», и второе такое же ломало бы поиск по имени */
+.доска-лавки { margin: 10px 0 14px; }
