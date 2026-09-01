@@ -95,7 +95,7 @@ async function шахматы(дом) {
 async function подтянутьШахматы() {
   if (window.ШАХМАТЫ) return true;
   try {
-    await import('./шахматы.js');
+    await import('./шахматы.2cc33152.js');
     return Boolean(window.ШАХМАТЫ);
   } catch (е) {
     return false;
