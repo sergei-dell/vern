@@ -27,9 +27,9 @@
   и с отключённой сетью.
 -->
 
-<link rel="stylesheet" href="стиль.e59c4df1.css">
-<link rel="stylesheet" href="герой/сборка.730b5e0d.css">
-<link rel="stylesheet" href="мир/страницы.ca8e0070.css">
+<link rel="stylesheet" href="стиль.821f58db.css">
+<link rel="stylesheet" href="герой/сборка.eb934c23.css">
+<link rel="stylesheet" href="мир/страницы.652a68b4.css">
 </head>
 <body>
 <!--
@@ -225,11 +225,6 @@
       <h2 data-т="заголовок_отметина"></h2>
       <div class="ряд" id="отметины"></div>
 
-      <!-- плащ: единственное, что не задано народом. Им красится
-           фигурка, бегающая по карте мира -->
-      <h2 data-т="заголовок_плащ"></h2>
-      <div class="ряд" id="плащи"></div>
-
       <div class="кнопки">
         <button class="кн тихая" data-назад="1" data-т="кнопка_назад"></button>
         <button class="кн тихая" data-перемешать data-т="кнопка_перемешать"></button>
@@ -325,6 +320,9 @@
     <div class="двор" id="двор">
       <svg class="мир" id="мир" viewBox="0 0 1900 1900" aria-hidden="true">
         <g id="земля"></g>
+        <!-- стена стоит сразу за землёй: всё остальное внутри города и
+             рисуется поверх неё -->
+        <g id="стена"></g>
         <g id="дороги"></g>
         <g id="постройки"></g>
         <g id="столбы"></g>
@@ -425,18 +423,18 @@
 </div>
 
 <!-- данные обеих частей: у каждой свои имена, спорить им не о чем -->
-<script src="герой/мир.1063994b.js"></script>
-<script src="герой/настройки.9b2c9824.js"></script>
+<script src="герой/мир.65a9e796.js"></script>
+<script src="герой/настройки.1b0ef542.js"></script>
 <script src="герой/брань.fd05b2df.js"></script>
-<script src="мир/мир.803d847d.js"></script>
-<script src="мир/настройки.83512e0f.js"></script>
+<script src="мир/мир.642f58a5.js"></script>
+<script src="мир/настройки.2a8b709e.js"></script>
 <script src="мир/дела.6ab4b7d3.js"></script>
 
 <!-- логика: каждая часть в своей области -->
-<script src="герой/герой.7ca805c2.js"></script>
-<script src="мир/карта.bceb7fe2.js"></script>
+<script src="герой/герой.c8a67ff1.js"></script>
+<script src="мир/карта.0dd45f63.js"></script>
 <script src="мир/лавки.044ef5eb.js"></script>
-<script src="мир/ход.3aa7b6f6.js"></script>
+<script src="мир/ход.c53a3938.js"></script>
 
 <!-- переключатель: он один знает про все части адреса -->
 <script src="вэрн.be4d00a6.js"></script>
