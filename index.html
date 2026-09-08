@@ -27,9 +27,9 @@
   и с отключённой сетью.
 -->
 
-<link rel="stylesheet" href="стиль.821f58db.css">
-<link rel="stylesheet" href="герой/сборка.7232bf30.css">
-<link rel="stylesheet" href="мир/страницы.652a68b4.css">
+<link rel="stylesheet" href="стиль.27f03e0a.css">
+<link rel="stylesheet" href="герой/сборка.7bc476f0.css">
+<link rel="stylesheet" href="мир/страницы.ba9a00bc.css">
 </head>
 <body>
 <!--
@@ -318,7 +318,15 @@
   <!-- ══ карта мира ══════════════════════════════════════════════ -->
   <section id="э-карта" hidden>
     <div class="двор" id="двор">
-      <svg class="мир" id="мир" viewBox="0 0 1900 1900" aria-hidden="true">
+      <!-- Мир рисуется на холсте: вид от героя, крупная точка.
+           Разметкой остаются вывески, окошки, кнопки и dialog —
+           иначе теряем резкий текст и попадание пальцем. -->
+      <canvas class="мир-холст" id="мир-холст" aria-hidden="true"></canvas>
+
+      <!-- Карта сверху на svg пока цела и держит устройство мира.
+           Показывать её незачем: холст показывает то же самое от
+           лица героя. -->
+      <svg class="мир" id="мир" viewBox="0 0 1900 1900" aria-hidden="true" hidden>
         <g id="земля"></g>
         <!-- стена стоит сразу за землёй: всё остальное внутри города и
              рисуется поверх неё -->
@@ -426,15 +434,16 @@
 <script src="герой/мир.65a9e796.js"></script>
 <script src="герой/настройки.706f10dd.js"></script>
 <script src="герой/брань.fd05b2df.js"></script>
-<script src="мир/мир.642f58a5.js"></script>
-<script src="мир/настройки.3eb4843b.js"></script>
+<script src="мир/мир.6a712e4e.js"></script>
+<script src="мир/настройки.1a524d42.js"></script>
 <script src="мир/дела.6ab4b7d3.js"></script>
 
 <!-- логика: каждая часть в своей области -->
-<script src="герой/герой.488897e7.js"></script>
-<script src="мир/карта.8be2321d.js"></script>
+<script src="герой/герой.de85c368.js"></script>
+<script src="мир/холст.4e680899.js"></script>
+<script src="мир/карта.fbbc98d3.js"></script>
 <script src="мир/лавки.044ef5eb.js"></script>
-<script src="мир/ход.c53a3938.js"></script>
+<script src="мир/ход.1973b4cc.js"></script>
 
 <!-- переключатель: он один знает про все части адреса -->
 <script src="вэрн.be4d00a6.js"></script>
