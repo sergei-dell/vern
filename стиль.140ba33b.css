@@ -1,5 +1,5 @@
 /*
-  стиль.7edb040e.css — ОБЩЕЕ ОФОРМЛЕНИЕ мира-витрины.
+  стиль.140ba33b.css — ОБЩЕЕ ОФОРМЛЕНИЕ мира-витрины.
 
   Цвета приходят из темы Телеграма и подставляются в переменные из
   ход.js. Вне Телеграма берётся запасная тема из настройки.js.
@@ -278,6 +278,31 @@ h2 { font-size: 13px; font-weight: 400; color: var(--тусклый); margin: 18
   width: 100%; height: auto;
   display: block; image-rendering: pixelated;
 }
+
+/* ── вывески ───────────────────────────────────────────────────────
+   Дощечка у входа с именем лавки. Стоит поверх холста там, где холст
+   нарисовал дом, и едет вместе с ним. Нажатия пропускает сквозь себя:
+   нажимают на дом, а не на надпись.
+
+   Открытая лавка — тёплые буквы; закрытая — тусклые; свободное место
+   говорит цену. Размер и прозрачность задаёт холст: чем дальше дом,
+   тем мельче дощечка и тем глубже она в дымке. */
+.вывески {
+  position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 1;
+}
+.вывеска {
+  position: absolute; left: 0; top: 0;
+  transform-origin: 50% 100%;
+  padding: .15em .5em .1em;
+  font-family: var(--заголовки); font-size: 15px; line-height: 1.1;
+  white-space: nowrap;
+  color: #6f6352; background: #1f1812e6;
+  border: 1px solid #3a2e22; border-radius: 2px;
+  box-shadow: 0 1px 0 #0008;
+  will-change: transform, opacity;
+}
+.вывеска.открыта  { color: var(--тепло-св); border-color: #7a5a30; text-shadow: 0 0 6px #e09a3a88; }
+.вывеска.свободно { color: #d9cfb8; background: #2a2a22e6; border-style: dashed; border-color: #8c826c; }
 
 /* ── миникарта ─────────────────────────────────────────────────────
    Единственное место, где мир виден сверху. По нажатию раскрывается

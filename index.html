@@ -27,9 +27,9 @@
   и с отключённой сетью.
 -->
 
-<link rel="stylesheet" href="стиль.7edb040e.css">
-<link rel="stylesheet" href="герой/сборка.a042bca2.css">
-<link rel="stylesheet" href="мир/страницы.f62bb6cf.css">
+<link rel="stylesheet" href="стиль.140ba33b.css">
+<link rel="stylesheet" href="герой/сборка.5e2e0590.css">
+<link rel="stylesheet" href="мир/страницы.e0c7b93e.css">
 </head>
 <body>
 <!--
@@ -322,6 +322,10 @@
            Разметкой остаются вывески, окошки, кнопки и dialog —
            иначе теряем резкий текст и попадание пальцем. -->
       <canvas class="мир-холст" id="мир-холст" aria-hidden="true"></canvas>
+      <!-- Вывески домов. Разметкой поверх холста, а не рисунком на нём:
+           задание §4 — всё, что читается, остаётся разметкой. Холст
+           только ставит их на места каждый кадр. -->
+      <div class="вывески" id="вывески" aria-hidden="true"></div>
 
       <!-- Карта сверху на svg пока цела и держит устройство мира.
            Показывать её незачем: холст показывает то же самое от
@@ -438,16 +442,16 @@
 <script src="герой/мир.65a9e796.js"></script>
 <script src="герой/настройки.103b3607.js"></script>
 <script src="герой/брань.fd05b2df.js"></script>
-<script src="мир/мир.da2bc754.js"></script>
-<script src="мир/настройки.93b9230d.js"></script>
+<script src="мир/мир.9d9410c3.js"></script>
+<script src="мир/настройки.e3938b6e.js"></script>
 <script src="мир/дела.6ab4b7d3.js"></script>
 
 <!-- логика: каждая часть в своей области -->
-<script src="герой/герой.143fda36.js"></script>
-<script src="мир/холст.e5cab8be.js"></script>
-<script src="мир/карта.b21fdb0a.js"></script>
+<script src="герой/герой.73082193.js"></script>
+<script src="мир/холст.481ea0c0.js"></script>
+<script src="мир/карта.60a02771.js"></script>
 <script src="мир/лавки.044ef5eb.js"></script>
-<script src="мир/ход.dac09077.js"></script>
+<script src="мир/ход.516cfad0.js"></script>
 
 <!-- переключатель: он один знает про все части адреса -->
 <script src="вэрн.be4d00a6.js"></script>
