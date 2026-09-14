@@ -82,6 +82,17 @@ window.КАРТА = (function () {
         связать(луч, луч.длина, поКлючу[внешн.ключ], долготаНаКольце(поКлючу[внешн.ключ], угол));
       }
     }
+    const первое = МИР.кольца[0];
+    for (const пр of МИР.пристани) {
+      const а = точка(НАСТРОЙКИ.карта.замокВорота, пр.угол), б = точка(первое.радиус, пр.угол);
+      const п = создатьПуть('M' + а.x.toFixed(2) + ' ' + а.y.toFixed(2) +
+                            'L' + б.x.toFixed(2) + ' ' + б.y.toFixed(2), 'дорога лучевая');
+      слой.appendChild(п);
+      const кЗамку = добавитьДорогу(МИР.виды.луч + '-' + пр.угол + '-' + МИР.виды.замок,
+                                    МИР.виды.луч, п, НАСТРОЙКИ.ход.луч);
+      кЗамку.кольца = [первое.ключ];
+      связать(кЗамку, кЗамку.длина, поКлючу[первое.ключ], долготаНаКольце(поКлючу[первое.ключ], пр.угол));
+    }
     const внешнее = МИР.кольца[МИР.кольца.length - 1];
     for (const пр of МИР.пристани) {
       const а = точка(внешнее.радиус, пр.угол);
@@ -410,11 +421,18 @@ window.КАРТА = (function () {
   }
   function нажалиМини(с) {
     if (!герой || !window.ХОЛСТ.раскрытаЛи || !window.ХОЛСТ.раскрытаЛи()) return false;
+    const дом = window.ХОЛСТ.домВТочкеМини(с.clientX, с.clientY);
+    if (дом) {
+      window.ХОЛСТ.свернутьМини();
+      нажалиДом(дом);
+      return true;
+    }
     const куда = window.ХОЛСТ.мирВТочкеМини(с.clientX, с.clientY);
     if (!куда) return false;
     const цель = ближайшаяТочка(куда);
     if (!цель) return false;
     камера.свободна = false;
+    if (window.ОСТРОВ) window.ОСТРОВ.кГерою();
     поставитьМетку(цель.точка);
     идтиК(цель.дорога.ключ, цель.s, убратьМетку);
     return true;
@@ -756,7 +774,40 @@ window.КАРТА = (function () {
       else if (к.вправо.indexOf(с.code) >= 0) { свернуть(1); с.preventDefault(); }
     });
     const мини = $(НАСТРОЙКИ.холст.мини.имяОкна);
-    if (мини) мини.addEventListener('click', (с) => { if (нажалиМини(с)) с.stopPropagation(); }, true);
+    let тянемКарту = null, протянулиКарту = false;
+    if (мини) {
+      мини.addEventListener('pointerdown', (с) => {
+        if (!window.ХОЛСТ.раскрытаЛи()) return;
+        тянемКарту = { x: с.clientX, y: с.clientY, сначала: { x: с.clientX, y: с.clientY } };
+        протянулиКарту = false;
+      });
+      window.addEventListener('pointermove', (с) => {
+        if (!тянемКарту) return;
+        if (!протянулиКарту && Math.hypot(с.clientX - тянемКарту.сначала.x, с.clientY - тянемКарту.сначала.y) >
+            НАСТРОЙКИ.карта.порогКлика) протянулиКарту = true;
+        if (протянулиКарту) window.ХОЛСТ.тянутьКарту(с.clientX - тянемКарту.x, с.clientY - тянемКарту.y);
+        тянемКарту.x = с.clientX; тянемКарту.y = с.clientY;
+      });
+      window.addEventListener('pointerup', () => { тянемКарту = null; });
+      мини.addEventListener('click', (с) => {
+        if (протянулиКарту) { протянулиКарту = false; с.stopPropagation(); return; }
+        if (нажалиМини(с)) с.stopPropagation();
+      }, true);
+      мини.addEventListener('wheel', (с) => {
+        if (!window.ХОЛСТ.раскрытаЛи() || !window.ОСТРОВ) return;
+        с.preventDefault();
+        window.ОСТРОВ.приблизить(Math.exp(-с.deltaY * НАСТРОЙКИ.остров.игра.колесо));
+      }, { passive: false });
+    }
+    const кнопка = (ид, дело) => { const у = $(ид); if (у) у.addEventListener('click', (с) => { с.stopPropagation(); дело(); }); };
+    const шаг = НАСТРОЙКИ.остров.игра.шагУвеличения;
+    кнопка('карта-ближе', () => window.ОСТРОВ.приблизить(шаг));
+    кнопка('карта-дальше', () => window.ОСТРОВ.приблизить(1 / шаг));
+    кнопка('карта-к-герою', () => window.ОСТРОВ.кГерою());
+    кнопка('карта-закрыть', () => window.ХОЛСТ.свернутьМини());
+    window.addEventListener('keydown', (с) => {
+      if (с.code === НАСТРОЙКИ.карта.клавиши.закрытьКарту && window.ХОЛСТ.раскрытаЛи()) window.ХОЛСТ.свернутьМини();
+    });
     $('к-герою').addEventListener('click', () => { камера.свободна = false; });
     $('кольца-кнопки').addEventListener('click', (с) => {
       const кн = с.target.closest('[data-кольцо]');

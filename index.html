@@ -27,7 +27,7 @@
   и с отключённой сетью.
 -->
 
-<link rel="stylesheet" href="стиль.c5170b56.css">
+<link rel="stylesheet" href="стиль.12b3cc00.css">
 <link rel="stylesheet" href="герой/сборка.10310e93.css">
 <link rel="stylesheet" href="мир/страницы.e3557af6.css">
 </head>
@@ -333,6 +333,13 @@
       <!-- Единственное место, где мир виден сверху. По нажатию
            раскрывается до трети экрана и сворачивается обратно. -->
       <div class="мини" id="мини"><canvas id="миникарта" aria-hidden="true"></canvas></div>
+      <!-- Кнопки раскрытой карты: ближе, дальше, к герою, закрыть. -->
+      <div class="карта-кнопки" id="карта-кнопки" hidden>
+        <button id="карта-ближе" data-т="карта_ближе"></button>
+        <button id="карта-дальше" data-т="карта_дальше"></button>
+        <button id="карта-к-герою" data-т="карта_к_герою"></button>
+        <button id="карта-закрыть" data-т="карта_закрыть"></button>
+      </div>
 
       <svg class="мир" id="мир" viewBox="0 0 1900 1900" aria-hidden="true" hidden>
         <g id="земля"></g>
@@ -442,15 +449,15 @@
 <script src="герой/мир.a84f84dd.js"></script>
 <script src="герой/настройки.2378528d.js"></script>
 <script src="герой/брань.9b48c1b9.js"></script>
-<script src="мир/мир.a4e2571e.js"></script>
-<script src="мир/настройки.1a0c5d24.js"></script>
+<script src="мир/мир.b99989cf.js"></script>
+<script src="мир/настройки.845fdd70.js"></script>
 <script src="мир/дела.6a8f2ef3.js"></script>
 
 <!-- логика: каждая часть в своей области -->
 <script src="герой/герой.d3f5ce62.js"></script>
-<script src="мир/остров.ed0f8236.js"></script>
-<script src="мир/холст.d19a3932.js"></script>
-<script src="мир/карта.26268a59.js"></script>
+<script src="мир/остров.b21052b7.js"></script>
+<script src="мир/холст.9801dff2.js"></script>
+<script src="мир/карта.8862a530.js"></script>
 <script src="мир/лавки.3695e198.js"></script>
 <script src="мир/ход.81b7e274.js"></script>
 
