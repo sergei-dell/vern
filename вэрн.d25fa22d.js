@@ -23,7 +23,11 @@ function запуск() {
   СБОРКА.запуск();
   ХОД.запуск();
   СБОРКА.когдаГотов(вМир);
-  $('к-войти').addEventListener('click', вСборку);
+  $('к-войти').addEventListener('click', () => {
+    if (window.ЗВУК) ЗВУК.ворота();
+    if (СБОРКА.есть()) вМир(); else вСборку();
+  });
+  $('кн-ворота').addEventListener('click', воВорота);
   $('к-переделать').addEventListener('click', вСборку);
   $('плашка-героя').addEventListener('click', вСборку);
   $('к-в-мир').addEventListener('click', вМир);

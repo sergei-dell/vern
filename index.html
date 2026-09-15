@@ -9,7 +9,7 @@
   index.html — ЕДИНСТВЕННЫЙ АДРЕС ПРОЕКТА.
 
   Раньше ссылок было три: сборка героя, мир и набор деталей. Теперь
-  одна, и переключение идёт БЕЗ ПЕРЕЗАГРУЗКИ — этим заведует вэрн.632e94f3.js.
+  одна, и переключение идёт БЕЗ ПЕРЕЗАГРУЗКИ — этим заведует вэрн.d25fa22d.js.
 
   Внутри два дома:
     #дом-сборки  — вступление, конструктор, готовый герой
@@ -27,7 +27,7 @@
   и с отключённой сетью.
 -->
 
-<link rel="stylesheet" href="стиль.92eb98f8.css">
+<link rel="stylesheet" href="стиль.ef863434.css">
 <link rel="stylesheet" href="герой/сборка.10310e93.css">
 <link rel="stylesheet" href="мир/страницы.e3557af6.css">
 </head>
@@ -358,10 +358,39 @@
 
     <div class="мгла"></div>
 
+    <!-- ══ панели мира: знак, кнопки вида, полоса лавок, подсказка ══ -->
+    <div class="панель знак-вэрна">
+      <span class="печать" data-т="панель_буква"></span>
+      <span class="надписи"><b data-т="надпись_мир"></b><small data-т="панель_подпись"></small></span>
+    </div>
+    <div class="панель действия">
+      <button class="кн-карта" id="кн-карта">
+        <svg class="знак-кнопки знак-карты" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5l6-2.5 6 2.5 6-2.5v13.5l-6 2.5-6-2.5-6 2.5z M9 4v13.5 M15 6.5v13.5"/></svg>
+        <svg class="знак-кнопки знак-улицы" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21L10 3h4l5 18 M12 7v2 M12 12v2.5 M12 17.5v3"/></svg>
+        <span id="кн-карта-слово"></span>
+        <kbd data-т="кн_карта_клавиша"></kbd>
+      </button>
+      <button class="кн-знак" id="кн-звук">
+        <svg class="знак-кнопки звук-вкл" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h4l5-4v13l-5-4H4z M16.5 9a4 4 0 0 1 0 6 M19 6.5a7.5 7.5 0 0 1 0 11"/></svg>
+        <svg class="знак-кнопки звук-выкл" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h4l5-4v13l-5-4H4z M16 9.5l5 5 M21 9.5l-5 5"/></svg>
+      </button>
+      <button class="кн-знак" id="кн-ворота">
+        <svg class="знак-кнопки" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 5.5h19 M5 9h14 M7 5.5V21 M17 5.5V21 M12 9v3"/></svg>
+      </button>
+      <button class="кн-знак" id="кн-экран">
+        <svg class="знак-кнопки" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5 M20 9V4h-5 M4 15v5h5 M20 15v5h-5"/></svg>
+      </button>
+    </div>
+    <div class="панель места" id="места-лавок"></div>
+    <div class="подсказка" id="подсказка"></div>
+
     <div class="плашка-героя" id="плашка-героя" hidden></div>
 
-    <div class="кольца-кнопки" id="кольца-кнопки"></div>
-    <button class="к-герою" id="к-герою"></button>
+    <!-- Кольца 1·2·3 и «к герою» двигали камеру svg-карты, которую уже
+         не видно: на улице и на острове они ничего не делали. Спрятаны
+         15 сентября, код на месте. -->
+    <div class="кольца-кнопки" id="кольца-кнопки" hidden></div>
+    <button class="к-герою" id="к-герою" hidden></button>
 
     <!-- переделать героя: только в мире, мелко, в углу -->
     <button class="переделать" id="к-переделать" data-т="кнопка_переделать"></button>
@@ -449,19 +478,21 @@
 <script src="герой/мир.a84f84dd.js"></script>
 <script src="герой/настройки.2378528d.js"></script>
 <script src="герой/брань.9b48c1b9.js"></script>
-<script src="мир/мир.b99989cf.js"></script>
-<script src="мир/настройки.912d8ab1.js"></script>
+<script src="мир/мир.da19c9a1.js"></script>
+<script src="мир/настройки.616acd06.js"></script>
 <script src="мир/дела.6a8f2ef3.js"></script>
 
 <!-- логика: каждая часть в своей области -->
 <script src="герой/герой.d3f5ce62.js"></script>
 <script src="мир/остров.41aaa001.js"></script>
 <script src="мир/холст.dabd8f05.js"></script>
-<script src="мир/карта.806f505b.js"></script>
+<script src="мир/карта.3c678ebd.js"></script>
 <script src="мир/лавки.3695e198.js"></script>
 <script src="мир/ход.81b7e274.js"></script>
+<script src="мир/звук.36620d3b.js"></script>
+<script src="мир/панели.a69245da.js"></script>
 
 <!-- переключатель: он один знает про все части адреса -->
-<script src="вэрн.632e94f3.js"></script>
+<script src="вэрн.d25fa22d.js"></script>
 </body>
 </html>
