@@ -204,6 +204,7 @@ h2 { font-size: 13px; font-weight: 400; color: var(--тусклый); margin: 18
   border-width: 3px; border-radius: 10px;
   box-shadow: 0 0 0 100vmax #05080ecc, 0 6px 30px #000c;
   z-index: 10; cursor: crosshair;
+  touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
 }
 .карта-кнопки {
   position: fixed; right: 18px; top: 50%; transform: translateY(-50%);
@@ -215,6 +216,10 @@ h2 { font-size: 13px; font-weight: 400; color: var(--тусклый); margin: 18
   color: #f0d49a; font-size: 22px; line-height: 1; cursor: pointer; padding: 0;
 }
 .карта-кнопки button:hover { color: #fff2c8; border-color: #e0a93a; }
+@media (orientation: portrait) {
+  .мини.раскрыта { width: 94vw; height: 84vh; aspect-ratio: auto; }
+  .карта-кнопки { top: auto; bottom: 10vh; transform: none; }
+}
 .закрай  { fill: #15171a; }
 .кладка  { fill: #4a4f57; }
 .зубцы   { fill: #3e434a; }
