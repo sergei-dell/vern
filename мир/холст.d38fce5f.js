@@ -727,6 +727,7 @@ function вывески(дома, вид, плотность) {
     if (!узел) {
       узел = document.createElement('div');
       узел.className = в.класс;
+      узел.dataset.дом = д.ключ;
       слойВывесок.appendChild(узел);
       дощечки[д.ключ] = узел;
     }
